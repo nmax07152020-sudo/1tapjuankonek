@@ -10,676 +10,320 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: #060913; color: #f8fafc; display: flex; justify-content: center; padding: 12px; min-height: 100vh; padding-bottom: 70px; }
+        .container { width: 100%; max-width: 440px; display: flex; flex-direction: column; gap: 12px; }
+
+        /* PIN LOCK SCREEN OVERLAY */
+        #pinLockScreen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #060913; z-index: 9999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px;
+        }
+        .pin-box {
+            background: #131c2e; border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px; padding: 24px; width: 100%; max-width: 340px; text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+        .pin-box h2 { font-size: 16px; font-weight: 800; color: #ffffff; margin-bottom: 8px; }
+        .pin-box p { font-size: 11px; color: #94a3b8; margin-bottom: 20px; }
+        .pin-input, select.pin-input {
+            width: 100%; background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px; padding: 12px; font-size: 14px; color: #ffffff; text-align: center; margin-bottom: 12px; outline: none;
+        }
+        .pin-btn {
+            width: 100%; background: #2563eb; color: white; border: none; border-radius: 12px;
+            padding: 12px; font-weight: 800; font-size: 13px; cursor: pointer; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4); margin-bottom: 8px;
+        }
+        .toggle-reg-link { font-size: 11px; color: #38bdf8; cursor: pointer; background: none; border: none; text-decoration: underline; margin-top: 8px; }
+        .pin-error { color: #ef4444; font-size: 11px; margin-top: 10px; display: none; }
+
+        /* LOGOUT HEADER BUTTON */
+        .logout-btn-top {
+            background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444; padding: 5px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 5px;
         }
 
-        body {
-            background-color: #060913;
-            color: #f8fafc;
-            display: flex;
-            justify-content: center;
-            padding: 12px;
-            min-height: 100vh;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 440px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        /* SCREENS */
-        .screen-box {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            min-height: 90vh;
-            gap: 16px;
-        }
-
-        .auth-card {
-            background: #182234;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .auth-card h2 {
-            font-size: 18px;
-            font-weight: 800;
-            color: #ffffff;
-            text-align: center;
-        }
-
-        .auth-card p {
-            font-size: 11px;
-            color: #94a3b8;
-            text-align: center;
-            line-height: 1.4;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .form-group label {
-            font-size: 11px;
-            font-weight: 700;
-            color: #cbd5e1;
-        }
-
-        .form-control {
-            background: #0f172a;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 10px;
-            padding: 9px 12px;
-            color: white;
-            font-size: 12px;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: #38bdf8;
-        }
-
-        .id-upload-box {
-            border: 2px dashed rgba(56, 189, 248, 0.4);
-            border-radius: 12px;
-            padding: 12px;
-            text-align: center;
-            background: rgba(15, 23, 42, 0.5);
-            cursor: pointer;
-            position: relative;
-        }
-
-        .id-upload-box input[type="file"] {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-        .id-upload-box i {
-            font-size: 20px;
-            color: #38bdf8;
-            margin-bottom: 4px;
-        }
-
-        .id-upload-box span {
-            font-size: 10px;
-            color: #cbd5e1;
-            display: block;
-        }
-
-        .register-btn {
-            background: linear-gradient(135deg, #10b981 0%, #047857 100%);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 12px;
-            font-weight: 800;
-            font-size: 13px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
-            transition: transform 0.2s;
-            margin-top: 4px;
-        }
-
-        .register-btn:active { transform: scale(0.97); }
-
-        /* PENDING SCREEN */
-        #pendingScreen {
-            display: none;
-            text-align: center;
-            align-items: center;
-        }
-
-        .spinner {
-            width: 48px;
-            height: 48px;
-            border: 4px solid rgba(56, 189, 248, 0.2);
-            border-top: 4px solid #38bdf8;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 12px auto;
-        }
-
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* MAIN DASHBOARD CONTENT */
-        #dashboardContent {
-            display: none;
-            flex-direction: column;
-            gap: 12px;
-            padding-top: 12px;
-        }
-
-        /* EMERGENCY ALERT TICKER */
+        /* EMERGENCY TICKER & HEADERS */
         .emergency-ticker {
             background: linear-gradient(90deg, #7f1d1d 0%, #dc2626 50%, #7f1d1d 100%);
-            background-size: 200% 200%;
-            animation: hazardStrip 3s ease infinite;
-            color: #ffffff;
-            padding: 8px 12px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff; padding: 8px 12px; border-radius: 12px; font-size: 11px; font-weight: 800;
+            display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255, 255, 255, 0.2);
         }
-
         .siren-box { display: flex; align-items: center; gap: 6px; }
-        .siren-icon { color: #fef08a; animation: pulseGlow 1s infinite alternate; }
+        .offline-bar { display: none; background: #b91c1c; color: white; text-align: center; padding: 8px; font-size: 11px; font-weight: 700; border-radius: 10px; }
 
-        .offline-bar {
-            display: none;
-            background: #b91c1c;
-            color: white;
-            text-align: center;
-            padding: 8px;
-            font-size: 11px;
-            font-weight: 700;
-            border-radius: 10px;
-        }
-
-        /* LGU HEADER */
         .lgu-header {
-            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%); border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px; padding: 14px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
         }
-
         .lgu-brand { display: flex; align-items: center; gap: 12px; }
-
-        .lgu-seal-logo {
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.5));
-            animation: logoPulse 3s infinite;
-        }
-
+        .lgu-seal-logo { width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; }
         .lgu-title-text h1 { font-size: 15px; font-weight: 800; color: #ffffff; }
         .lgu-title-text p { font-size: 10px; color: #38bdf8; font-weight: 700; text-transform: uppercase; }
+        .header-right-group { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+        .online-badge { display: flex; align-items: center; gap: 6px; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); color: #10b981; padding: 5px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; }
+        .pulse-dot { width: 7px; height: 7px; background-color: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981; }
 
-        .online-badge {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(16, 185, 129, 0.12);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            color: #10b981;
-            padding: 5px 8px;
-            border-radius: 20px;
-            font-size: 10px;
-            font-weight: 700;
-        }
-
-        .pulse-dot {
-            width: 7px;
-            height: 7px;
-            background-color: #10b981;
-            border-radius: 50%;
-            box-shadow: 0 0 8px #10b981;
-            animation: pulseGlow 1s infinite alternate;
-        }
-
-        /* MAIN DIAL BUTTON */
+        /* MAIN DIAL & GRID */
         .main-dial-btn {
-            background: linear-gradient(135deg, #ef4444 0%, #7f1d1d 100%);
-            border-radius: 20px;
-            padding: 16px;
-            color: white;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transition: transform 0.2s;
+            background: linear-gradient(135deg, #ef4444 0%, #7f1d1d 100%); border-radius: 20px; padding: 16px;
+            color: white; text-decoration: none; display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255, 255, 255, 0.3);
         }
-
-        .main-dial-btn:active { transform: scale(0.97); }
-
         .dial-left { display: flex; align-items: center; gap: 12px; }
-
-        .phone-icon-wrap {
-            width: 48px;
-            height: 48px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            animation: iconFloat 2s ease-in-out infinite;
-        }
-
+        .phone-icon-wrap { width: 48px; height: 48px; background: rgba(255, 255, 255, 0.2); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
         .dial-text h2 { font-size: 18px; font-weight: 900; }
         .dial-text p { font-size: 11px; opacity: 0.9; }
+        .call-action-btn { width: 38px; height: 38px; background: #ffffff; color: #dc2626; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; }
 
-        .call-action-btn {
-            width: 38px;
-            height: 38px;
-            background: #ffffff;
-            color: #dc2626;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-            animation: pulseGlow 1.2s infinite alternate;
-        }
-
-        /* ACTION GRID */
         .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
-        .action-card {
-            background: #182234;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            padding: 12px;
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .action-card:active { transform: scale(0.96); }
-
-        .action-card-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-        }
-
+        .action-card { background: #182234; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 12px; color: white; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .action-card-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
         .card-map-icon { background: rgba(2, 132, 199, 0.2); color: #38bdf8; }
         .card-aid-icon { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
-
         .action-card-text h3 { font-size: 12px; font-weight: 800; }
         .action-card-text p { font-size: 10px; color: #94a3b8; }
+        .section-header { font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-top: 4px; }
 
-        .section-header {
-            font-size: 11px;
-            font-weight: 800;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin-top: 4px;
-        }
-
-        /* GRID CARDS & VECTOR SEALS */
         .hotlines-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
-        .lgu-card {
-            background: #131c2e;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 18px;
-            padding: 12px;
-            text-decoration: none;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 135px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            position: relative;
-        }
-
-        .lgu-card:active { transform: scale(0.96); }
+        .lgu-card { background: #131c2e; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 18px; padding: 12px; text-decoration: none; color: white; display: flex; flex-direction: column; justify-content: space-between; height: 135px; }
         .card-top { display: flex; justify-content: space-between; align-items: center; }
-
-        .official-seal {
-            width: 52px;
-            height: 52px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
+        .official-seal { width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; }
         .official-seal svg { width: 100%; height: 100%; }
-
-        .card-fire .official-seal { filter: drop-shadow(0 0 8px rgba(234, 88, 12, 0.6)); animation: flameFlicker 1.5s infinite alternate; }
-        .card-police .official-seal { filter: drop-shadow(0 0 8px rgba(37, 99, 235, 0.6)); animation: shieldPulse 2s infinite ease-in-out; }
-        .card-health .official-seal { filter: drop-shadow(0 0 8px rgba(220, 38, 38, 0.6)); animation: heartBeat 1.2s infinite; }
-        .card-disaster .official-seal { filter: drop-shadow(0 0 8px rgba(2, 132, 199, 0.6)); }
-        .card-disaster .ocd-triangle { transform-origin: center; animation: sealPulse 2.5s infinite alternate; }
-
-        .tap-call-pill {
-            background: rgba(255, 255, 255, 0.08);
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            color: #38bdf8;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
+        .tap-call-pill { background: rgba(255, 255, 255, 0.08); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #38bdf8; }
         .dept-name { font-size: 12px; font-weight: 800; text-transform: uppercase; }
         .dept-contact { font-size: 10px; color: #94a3b8; font-weight: 600; }
 
-        @keyframes hazardStrip { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        @keyframes pulseGlow { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.08); opacity: 1; filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8)); } }
-        @keyframes logoPulse { 0%, 100% { filter: drop-shadow(0 0 4px rgba(245, 158, 11, 0.4)); } 50% { filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.8)); } }
-        @keyframes iconFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
-        @keyframes flameFlicker { 0% { transform: scale(1); filter: drop-shadow(0 0 4px #ea580c); } 100% { transform: scale(1.05); filter: drop-shadow(0 0 12px #f97316); } }
-        @keyframes shieldPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); filter: drop-shadow(0 0 10px #3b82f6); } }
-        @keyframes heartBeat { 0% { transform: scale(1); } 14% { transform: scale(1.08); } 28% { transform: scale(1); } 42% { transform: scale(1.08); } 70% { transform: scale(1); } }
-        @keyframes sealPulse { 0% { transform: scale(0.96); } 100% { transform: scale(1.04); } }
+        /* BOTTOM NAV */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 440px;
+            background: rgba(13, 19, 33, 0.95); backdrop-filter: blur(10px); border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex; justify-content: space-around; padding: 10px 0; z-index: 900;
+        }
+        .nav-item { background: none; border: none; color: #94a3b8; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; font-size: 10px; font-weight: 700; }
+        .nav-item i { font-size: 18px; }
+        .nav-item.active, .nav-item:hover { color: #38bdf8; }
 
         /* MODALS */
         .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(6, 9, 19, 0.96);
-            z-index: 1000;
-            flex-direction: column;
-            padding: 16px;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(6, 9, 19, 0.96); z-index: 1000; flex-direction: column; padding: 16px;
         }
-
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .modal-title { font-size: 15px; font-weight: 800; color: #ffffff; display: flex; align-items: center; gap: 8px; }
-
-        .close-modal-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            color: #ffffff;
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
+        .close-modal-btn { background: rgba(255, 255, 255, 0.1); border: none; color: #ffffff; width: 34px; height: 34px; border-radius: 50%; font-size: 16px; cursor: pointer; }
+        
         #map { flex: 1; width: 100%; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); }
         .map-controls { margin-top: 10px; display: flex; flex-direction: column; gap: 8px; }
-
-        .locate-gps-btn {
-            background: #10b981; color: white; border: none; border-radius: 12px;
-            padding: 12px; font-weight: 800; font-size: 13px; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-        }
-
-        .sms-sos-btn {
-            background: #dc2626; color: white; border: none; border-radius: 12px;
-            padding: 12px; font-weight: 800; font-size: 13px; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-        }
-
+        .locate-gps-btn { background: #10b981; color: white; border: none; border-radius: 12px; padding: 12px; font-weight: 800; font-size: 13px; cursor: pointer; }
+        .sms-sos-btn { background: #dc2626; color: white; border: none; border-radius: 12px; padding: 12px; font-weight: 800; font-size: 13px; cursor: pointer; }
         .gps-status-box { background: #182234; padding: 8px; border-radius: 8px; font-size: 10px; color: #cbd5e1; text-align: center; }
 
-        .guide-content { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
-        .guide-card { background: #182234; border-radius: 12px; padding: 14px; border-left: 4px solid #f59e0b; }
-        .guide-card h4 { font-size: 14px; color: #f59e0b; margin-bottom: 6px; }
-        .guide-card p { font-size: 12px; color: #cbd5e1; line-height: 1.4; }
+        .profile-content { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; padding-bottom: 20px; }
+        .profile-section-card { background: #131c2e; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 14px; }
+        .profile-section-card h3 { font-size: 13px; font-weight: 800; color: #38bdf8; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+        .info-row { display: flex; justify-content: space-between; font-size: 11px; padding: 6px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .info-label { color: #94a3b8; font-weight: 600; }
+        .info-value { color: #ffffff; font-weight: 700; text-align: right; }
+        .form-group-label { font-size: 10px; color: #94a3b8; margin-bottom: 4px; display: block; font-weight: 700; }
+        .profile-btn-action { width: 100%; background: #0284c7; color: white; border: none; border-radius: 10px; padding: 10px; font-weight: 800; font-size: 12px; cursor: pointer; margin-top: 6px; }
+        .profile-btn-danger { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #ef4444; width: 100%; border-radius: 10px; padding: 10px; font-weight: 800; font-size: 12px; cursor: pointer; margin-top: 6px; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-
-        <!-- 1. REGISTRATION SCREEN -->
-        <div id="authScreen" class="screen-box">
-            <div class="auth-card">
-                <div style="text-align: center;">
-                    <i class="fa-solid fa-shield-halved" style="font-size: 28px; color: #38bdf8; margin-bottom: 4px;"></i>
-                    <h2>Juan-Tap-Juan-Konek</h2>
-                    <p>Magparehistro at maghintay ng Admin Verification para ma-access ang LGU emergency network.</p>
-                </div>
-                
-                <div class="form-group">
-                    <label>Buong Pangalan</label>
-                    <input type="text" id="regName" class="form-control" placeholder="Juan Dela Cruz" required>
-                </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                    <div class="form-group">
-                        <label>Edad</label>
-                        <input type="number" id="regAge" class="form-control" placeholder="25" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Kaarawan</label>
-                        <input type="date" id="regBday" class="form-control" required>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Address</label>
-                    <input type="text" id="regAddress" class="form-control" placeholder="Barangay, Lungsod" required>
-                </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                    <div class="form-group">
-                        <label>Uri ng ID</label>
-                        <input type="text" id="regIdType" class="form-control" placeholder="PhilSys / Brgy ID" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Numero ng ID</label>
-                        <input type="text" id="regIdNum" class="form-control" placeholder="ID Number" required>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Contact Number (Gagamitin sa pag-check ng status)</label>
-                    <input type="tel" id="regPhone" class="form-control" placeholder="09123456789" required>
-                </div>
-
-                <div class="form-group">
-                    <label>I-upload ang Valid ID Picture</label>
-                    <div class="id-upload-box" id="uploadBox">
-                        <i class="fa-solid fa-cloud-arrow-up"></i>
-                        <span id="uploadText">I-click o i-drop ang ID dito</span>
-                        <input type="file" id="regIdFile" accept="image/*" onchange="handleFileSelect(this)">
-                    </div>
-                </div>
-
-                <button class="register-btn" id="submitBtn" onclick="submitRegistration()">ISUMITE ANG REGISTRATION</button>
-            </div>
+    <!-- PIN LOCK SCREEN / REGISTRATION FLOW -->
+    <div id="pinLockScreen">
+        <!-- Step 4: Login via Contact Number & PIN -->
+        <div class="pin-box" id="loginBoxContainer">
+            <h2>🔐 Security Verification</h2>
+            <p>I-enter ang iyong Contact Number at 4-Digit PIN para makapasok</p>
+			<input type="text" id="loginContact" class="pin-input" maxlength="11" placeholder="Contact Number">
+            <input type="password" id="loginPin" class="pin-input" maxlength="4" placeholder="4-Digit PIN">
+            <button class="pin-btn" onclick="verifyLogin()">LOGIN</button>
+            <button class="toggle-reg-link" onclick="showRegForm(true)">Wala pang account? Mag-rehistro</button>
+            <div id="pinError" class="pin-error"></div>
         </div>
 
-        <!-- 2. PENDING WAITING SCREEN -->
-        <div id="pendingScreen" class="screen-box">
-            <div class="auth-card">
-                <div class="spinner"></div>
-                <h2>Naghihintay ng Pag-apruba...</h2>
-                <p>Naisumite na ang iyong ID at mga detalye. Kasalukuyang sinusuri ng LGU Admin ang iyong aplikasyon.</p>
-                <p style="color: #38bdf8; font-weight: 700; margin-top: 6px;" id="statusNotice">Status: PENDING</p>
-                <button class="register-btn" style="background: #334155; margin-top: 10px;" onclick="checkVerificationManually()">I-CHECK ULIT ANG STATUS</button>
-            </div>
+        <!-- Step 1 & 2: Registration Form & Success Notification -->
+        <div class="pin-box" id="regFormContainer" style="display: none; max-height: 90vh; overflow-y: auto;">
+            <h2>📝 User Registration</h2>
+            <p>Punan ang mga detalye</p>
+            <input type="text" id="regName" class="pin-input" placeholder="Full Name">
+            <input type="number" id="regAge" class="pin-input" placeholder="Age">
+            <input type="date" id="regBday" class="pin-input" placeholder="Birthday">
+            <input type="text" id="regAddress" class="pin-input" placeholder="Address">
+            <select id="regIdType" class="pin-input">
+                <option value="PhilSys">PhilSys ID</option>
+                <option value="DriversLicense">Driver's License</option>
+                <option value="VotersID">Voter's ID</option>
+				<option value="VotersID">PRC ID</option>
+				<option value="VotersID">Passport ID</option>
+				<option value="VotersID">UMID ID</option>
+				<option value="VotersID">Postal ID</option>
+				<option value="VotersID">PhilHealth ID</option>
+				<option value="VotersID">TIN ID</option>
+				<option value="VotersID">Senior Citizen ID</option>
+				<option value="VotersID">PWD ID</option>
+            </select>
+            <input type="text" id="regIdNum" class="pin-input" placeholder="ID Number">
+			<input type="text" id="regContact" class="pin-input" maxlength="11" placeholder="Contact Number">
+            
+            <!-- H. ID Photo Capture / Upload -->
+            <label class="form-group-label" style="text-align: left; margin-bottom: 2px;">ID Photo (Camera o Upload)</label>
+            <input type="file" id="regPhotoFile" class="pin-input" accept="image/*" capture="environment" style="padding: 8px; font-size: 11px;" onchange="previewAndConvertImage(this)">
+            <input type="hidden" id="regPhoto">
+
+            <input type="text" id="regPin" class="pin-input" maxlength="4" placeholder="4-Digit PIN Code (e.g. 0511)">
+            
+            <button class="pin-btn" onclick="submitRegistration()">SUBMIT REGISTRATION</button>
+            <button class="toggle-reg-link" onclick="showRegForm(false)">Bumalik sa Login</button>
+            <div id="regError" class="pin-error"></div>
         </div>
-
-        <!-- 3. MAIN DASHBOARD CONTENT (Nakatago habang di pa approved) -->
-        <div id="dashboardContent">
-
-            <div class="emergency-ticker">
-                <div class="siren-box">
-                    <i class="fa-solid fa-lightbulb siren-icon"></i>
-                    <span>DIRECT LGU DISPATCH READY</span>
-                </div>
-                <span>24/7 ACTIVE</span>
-            </div>
-
-            <div class="offline-bar" id="offlineBar">
-                <i class="fa-solid fa-wifi"></i> Offline Mode: Cellular calls are functional.
-            </div>
-
-            <div class="lgu-header">
-                <div class="lgu-brand">
-                    <div class="lgu-seal-logo">
-                        <svg viewBox="0 0 100 100">
-                            <circle cx="50" cy="50" r="48" fill="#0f172a" stroke="#d97706" stroke-width="2.5" />
-                            <circle cx="50" cy="50" r="42" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3,2" />
-                            <path d="M50 12 A38 38 0 0 1 88 50 L50 50 Z" fill="#2563eb" />
-                            <path d="M88 50 A38 38 0 0 1 50 88 L50 50 Z" fill="#dc2626" />
-                            <path d="M50 88 A38 38 0 0 1 12 50 L50 50 Z" fill="#f59e0b" />
-                            <path d="M12 50 A38 38 0 0 1 50 12 L50 50 Z" fill="#1e293b" />
-                            <circle cx="50" cy="50" r="14" fill="#fbbf24" stroke="#ffffff" stroke-width="1.5" />
-                            <polygon points="50,20 51.5,23 55,23 52,25 53,28 50,26 47,28 48,25 45,23 48.5,23" fill="#ffffff" />
-                            <polygon points="73,62 74.5,65 78,65 75,67 76,70 73,68 70,70 71,67 68,65 71.5,65" fill="#ffffff" />
-                            <polygon points="27,62 28.5,65 32,65 29,67 30,70 27,68 24,70 25,67 22,65 25.5,65" fill="#ffffff" />
-                        </svg>
-                    </div>
-                    <div class="lgu-title-text">
-                        <h1>Juan-Tap-Juan-Konek</h1>
-                        <p id="userGreeting">Verified User</p>
-                    </div>
-                </div>
-                <div class="online-badge">
-                    <div class="pulse-dot"></div> Active
-                </div>
-            </div>
-
-            <a href="tel:911" class="main-dial-btn">
-                <div class="dial-left">
-                    <div class="phone-icon-wrap"><i class="fa-solid fa-headset"></i></div>
-                    <div class="dial-text">
-                        <h2>1-TAP DIAL 911</h2>
-                        <p>Instant LGU Response Unit</p>
-                    </div>
-                </div>
-                <div class="call-action-btn"><i class="fa-solid fa-phone"></i></div>
-            </a>
-
-            <div class="action-grid">
-                <div class="action-card" onclick="openMapModal()">
-                    <div class="action-card-icon card-map-icon"><i class="fa-solid fa-map-location-dot"></i></div>
-                    <div class="action-card-text">
-                        <h3>Emergency Map</h3>
-                        <p>Find centers & GPS</p>
-                    </div>
-                </div>
-                <div class="action-card" onclick="openGuideModal()">
-                    <div class="action-card-icon card-aid-icon"><i class="fa-solid fa-kit-medical"></i></div>
-                    <div class="action-card-text">
-                        <h3>First Aid Guide</h3>
-                        <p>Quick Survival steps</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="section-header">Direct Emergency Units</div>
-
-            <div class="hotlines-grid">
-                <a href="tel:160" class="lgu-card card-fire">
-                    <div class="card-top">
-                        <div class="official-seal">
-                            <svg viewBox="0 0 100 100">
-                                <circle cx="50" cy="50" r="46" fill="#7c2d12" stroke="#ea580c" stroke-width="2" />
-                                <circle cx="50" cy="50" r="38" fill="#1e293b" stroke="#f97316" stroke-width="1" />
-                                <path d="M22 22 L78 78 M78 22 L22 78" stroke="#cbd5e1" stroke-width="4.5" stroke-linecap="round" />
-                                <path d="M20 18 L28 26 M72 18 L80 26 M18 72 L26 80 M72 80 L80 72" stroke="#ef4444" stroke-width="3" />
-                                <path d="M28 64 C28 40 72 40 72 64 Z" fill="#c2410c" />
-                                <path d="M50 25 C50 25 64 40 64 54 C64 63 58 68 50 68 C42 68 36 63 36 54 C36 40 50 25 50 25 Z" fill="#f59e0b" />
-                                <path d="M50 38 C50 38 58 48 58 56 C58 61 54 64 50 64 C46 64 42 61 42 56 C42 48 50 38 50 38 Z" fill="#ef4444" />
-                                <path d="M50 48 C50 48 54 53 54 57 C54 60 52 62 50 62 C48 62 46 60 46 57 C46 53 50 48 50 48 Z" fill="#fef08a" />
-                            </svg>
-                        </div>
-                        <div class="tap-call-pill"><i class="fa-solid fa-phone-flip"></i></div>
-                    </div>
-                    <div>
-                        <div class="dept-name">Fire Station</div>
-                        <div class="dept-contact">BFP / Hotline 160</div>
-                    </div>
-                </a>
-
-                <a href="tel:117" class="lgu-card card-police">
-                    <div class="card-top">
-                        <div class="official-seal">
-                            <svg viewBox="0 0 100 100">
-                                <circle cx="50" cy="50" r="46" fill="#1e3a8a" stroke="#fbbf24" stroke-width="2" />
-                                <path d="M50 14 L78 28 V52 C78 68 50 84 50 84 C50 84 22 68 22 52 V28 Z" fill="#1d4ed8" stroke="#ffffff" stroke-width="2" />
-                                <path d="M30 52 C30 38 40 30 50 30 C60 30 70 38 70 52 C70 66 60 72 50 72 C40 72 30 66 30 52 Z" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="4,2" />
-                                <circle cx="50" cy="50" r="9" fill="#f59e0b" />
-                                <polygon points="50,38 52,44 58,42 54,47 59,51 52,52 53,58 48,54 44,58 46,51 40,49 46,45 43,40 48,43" fill="#fbbf24" />
-                                <polygon points="50,18 52,23 57,23 53,26 55,31 50,28 45,31 47,26 43,23 48,23" fill="#ffffff" />
-                            </svg>
-                        </div>
-                        <div class="tap-call-pill"><i class="fa-solid fa-phone-flip"></i></div>
-                    </div>
-                    <div>
-                        <div class="dept-name">Police Station</div>
-                        <div class="dept-contact">PNP / Hotline 117</div>
-                    </div>
-                </a>
-
-                <a href="tel:143" class="lgu-card card-health">
-                    <div class="card-top">
-                        <div class="official-seal">
-                            <svg viewBox="0 0 100 100">
-                                <circle cx="50" cy="50" r="46" fill="#064e3b" stroke="#10b981" stroke-width="2" />
-                                <circle cx="50" cy="50" r="40" fill="#ffffff" />
-                                <path d="M38 18 H62 V38 H82 V62 H62 V82 H38 V62 H18 V38 H38 Z" fill="#dc2626" />
-                                <circle cx="50" cy="50" r="39" fill="none" stroke="#dc2626" stroke-width="1.5" />
-                            </svg>
-                        </div>
-                        <div class="tap-call-pill"><i class="fa-solid fa-phone-flip"></i></div>
-                    </div>
-                    <div>
-                        <div class="dept-name">Health & Rescue</div>
-                        <div class="dept-contact">Red Cross / Hotline 143</div>
-                    </div>
-                </a>
-
-                <a href="tel:122" class="lgu-card card-disaster">
-                    <div class="card-top">
-                        <div class="official-seal">
-                            <svg viewBox="0 0 100 100">
-                                <circle cx="50" cy="50" r="46" fill="#0c4a6e" stroke="#38bdf8" stroke-width="2" />
-                                <circle cx="50" cy="50" r="40" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5" />
-                                <g class="ocd-triangle">
-                                    <polygon points="50,18 80,72 20,72" fill="#ea580c" stroke="#ffffff" stroke-width="2" />
-                                    <polygon points="50,28 72,67 28,67" fill="#0284c7" />
-                                </g>
-                                <circle cx="50" cy="52" r="8" fill="#fbbf24" stroke="#ffffff" stroke-width="1.5" />
-                            </svg>
-                        </div>
-                        <div class="tap-call-pill"><i class="fa-solid fa-phone-flip"></i></div>
-                    </div>
-                    <div>
-                        <div class="dept-name">Disaster Rescue</div>
-                        <div class="dept-contact">MDRRMO / Hotline 122</div>
-                    </div>
-                </a>
-
-            </div>
-
-        </div>
-
     </div>
+
+    <div class="container">
+        <div class="emergency-ticker">
+            <div class="siren-box"><i class="fa-solid fa-lightbulb"></i><span>DIRECT LGU DISPATCH READY</span></div>
+            <span>24/7 ACTIVE</span>
+        </div>
+        <div class="offline-bar" id="offlineBar"><i class="fa-solid fa-wifi"></i> Offline Mode</div>
+
+        <div class="lgu-header">
+            <div class="lgu-brand">
+                <div class="lgu-seal-logo">
+                    <svg viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="48" fill="#0f172a" stroke="#d97706" stroke-width="2.5" />
+                        <path d="M50 12 A38 38 0 0 1 88 50 L50 50 Z" fill="#2563eb" />
+                        <path d="M88 50 A38 38 0 0 1 50 88 L50 50 Z" fill="#dc2626" />
+                        <path d="M50 88 A38 38 0 0 1 12 50 L50 50 Z" fill="#f59e0b" />
+                        <path d="M12 50 A38 38 0 0 1 50 12 L50 50 Z" fill="#1e293b" />
+                        <circle cx="50" cy="50" r="14" fill="#fbbf24" stroke="#ffffff" stroke-width="1.5" />
+                    </svg>
+                </div>
+                <div class="lgu-title-text">
+                    <h1>Juan-Tap-Juan-Konek</h1>
+                    <p>Official Emergency Network</p>
+                </div>
+            </div>
+            <div class="header-right-group">
+                <div class="online-badge"><div class="pulse-dot"></div> Active</div>
+                <button class="logout-btn-top" onclick="triggerLogout()"><i class="fa-solid fa-lock"></i> Logout</button>
+            </div>
+        </div>
+
+        <!-- MAIN DIAL -->
+        <a href="tel:911" class="main-dial-btn">
+            <div class="dial-left">
+                <div class="phone-icon-wrap"><i class="fa-solid fa-headset"></i></div>
+                <div class="dial-text"><h2>1-TAP DIAL 911</h2><p>Instant LGU Response Unit</p></div>
+            </div>
+            <div class="call-action-btn"><i class="fa-solid fa-phone"></i></div>
+        </a>
+
+        <div class="action-grid">
+            <div class="action-card" onclick="openMapModal()">
+                <div class="action-card-icon card-map-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+                <div class="action-card-text"><h3>Emergency Map</h3><p>Find centers & GPS</p></div>
+            </div>
+            <div class="action-card" onclick="openGuideModal()">
+                <div class="action-card-icon card-aid-icon"><i class="fa-solid fa-kit-medical"></i></div>
+                <div class="action-card-text"><h3>First Aid Guide</h3><p>Quick Survival steps</p></div>
+            </div>
+        </div>
+
+<div class="section-header">Direct Emergency Units</div>
+
+<!-- DEPARTMENT CARDS -->
+<div class="hotlines-grid">
+    <a href="tel:160" class="lgu-card card-fire">
+        <div class="card-top">
+            <div class="official-seal">
+                <svg viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="46" fill="#7c2d12" stroke="#ea580c" stroke-width="2" />
+                    <circle cx="50" cy="50" r="38" fill="#1e293b" stroke="#f97316" stroke-width="1" />
+                    <path d="M22 22 L78 78 M78 22 L22 78" stroke="#cbd5e1" stroke-width="4.5" stroke-linecap="round" />
+                    <path d="M20 18 L28 26 M72 18 L80 26 M18 72 L26 80 M72 80 L80 72" stroke="#ef4444" stroke-width="3" />
+                    <path d="M28 64 C28 40 72 40 72 64 Z" fill="#c2410c" />
+                    <path d="M50 25 C50 25 64 40 64 54 C64 63 58 68 50 68 C42 68 36 63 36 54 C36 40 50 25 50 25 Z" fill="#f59e0b" />
+                    <path d="M50 38 C50 38 58 48 58 56 C58 61 54 64 50 64 C46 64 42 61 42 56 C42 48 50 38 50 38 Z" fill="#ef4444" />
+                    <path d="M50 48 C50 48 54 53 54 57 C54 60 52 62 50 62 C48 62 46 60 46 57 C46 53 50 48 50 48 Z" fill="#fef08a" />
+                </svg>
+            </div>
+            <div class="tap-call-pill"><i class="fa-solid fa-phone-flip"></i></div>
+        </div>
+        <div>
+            <div class="dept-name">Fire Station</div>
+            <div class="dept-contact">BFP / Hotline 160</div>
+        </div>
+    </a>
+
+    <a href="tel:117" class="lgu-card card-police">
+        <div class="card-top">
+            <div class="official-seal">
+                <svg viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="46" fill="#1e3a8a" stroke="#fbbf24" stroke-width="2" />
+                    <path d="M50 14 L78 28 V52 C78 68 50 84 50 84 C50 84 22 68 22 52 V28 Z" fill="#1d4ed8" stroke="#ffffff" stroke-width="2" />
+                    <path d="M30 52 C30 38 40 30 50 30 C60 30 70 38 70 52 C70 66 60 72 50 72 C40 72 30 66 30 52 Z" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="4,2" />
+                    <circle cx="50" cy="50" r="9" fill="#f59e0b" />
+                    <polygon points="50,38 52,44 58,42 54,47 59,51 52,52 53,58 48,54 44,58 46,51 40,49 46,45 43,40 48,43" fill="#fbbf24" />
+                    <polygon points="50,18 52,23 57,23 53,26 55,31 50,28 45,31 47,26 43,23 48,23" fill="#ffffff" />
+                </svg>
+            </div>
+            <div class="tap-call-pill"><i class="fa-solid fa-phone-flip"></i></div>
+        </div>
+        <div>
+            <div class="dept-name">Police Station</div>
+            <div class="dept-contact">PNP / Hotline 117</div>
+        </div>
+    </a>
+
+    <a href="tel:143" class="lgu-card card-health">
+        <div class="card-top">
+            <div class="official-seal">
+                <svg viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="46" fill="#064e3b" stroke="#10b981" stroke-width="2" />
+                    <circle cx="50" cy="50" r="40" fill="#ffffff" />
+                    <path d="M38 18 H62 V38 H82 V62 H62 V82 H38 V62 H18 V38 H38 Z" fill="#dc2626" />
+                    <circle cx="50" cy="50" r="39" fill="none" stroke="#dc2626" stroke-width="1.5" />
+                </svg>
+            </div>
+            <div class="tap-call-pill"><i class="fa-solid fa-phone-flip"></i></div>
+        </div>
+        <div>
+            <div class="dept-name">Health & Rescue</div>
+            <div class="dept-contact">Red Cross / Hotline 143</div>
+        </div>
+    </a>
+
+    <a href="tel:122" class="lgu-card card-disaster">
+        <div class="card-top">
+            <div class="official-seal">
+                <svg viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="46" fill="#0c4a6e" stroke="#38bdf8" stroke-width="2" />
+                    <circle cx="50" cy="50" r="40" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5" />
+                    <g class="ocd-triangle">
+                        <polygon points="50,18 80,72 20,72" fill="#ea580c" stroke="#ffffff" stroke-width="2" />
+                        <polygon points="50,28 72,67 28,67" fill="#0284c7" />
+                    </g>
+                    <circle cx="50" cy="52" r="8" fill="#fbbf24" stroke="#ffffff" stroke-width="1.5" />
+                </svg>
+            </div>
+            <div class="tap-call-pill"><i class="fa-solid fa-phone-flip"></i></div>
+        </div>
+        <div>
+            <div class="dept-name">Disaster Rescue</div>
+            <div class="dept-contact">MDRRMO / Hotline 122</div>
+        </div>
+    </a>
+</div>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" onclick="navAction('home', this)"><i class="fa-solid fa-house"></i><span>Home</span></button>
+        <button class="nav-item" onclick="navAction('services', this)"><i class="fa-solid fa-layer-group"></i><span>Services</span></button>
+        <button class="nav-item" onclick="navAction('profile', this)"><i class="fa-solid fa-user-shield"></i><span>Profile</span></button>
+    </nav>
 
     <!-- MAP MODAL -->
     <div class="modal-overlay" id="mapModal">
@@ -690,29 +334,47 @@
         <div id="map"></div>
         <div class="map-controls">
             <button class="locate-gps-btn" onclick="locateUser()"><i class="fa-solid fa-crosshairs"></i> FIND MY LOCATION</button>
-            <button class="sms-sos-btn" onclick="sendSOSViaSMS()"><i class="fa-solid fa-comment-sms"></i> SEND LOCATION VIA SMS (SOS)</button>
+            <button class="sms-sos-btn" onclick="sendSOSViaSMS()"><i class="fa-solid fa-comment-sms"></i> SEND SOS VIA SMS</button>
             <div class="gps-status-box" id="gps-status">Click button above to detect coordinates.</div>
         </div>
     </div>
 
-    <!-- FIRST AID MODAL -->
-    <div class="modal-overlay" id="guideModal">
+    <!-- PROFILE SETTINGS MODAL -->
+    <div class="modal-overlay" id="profileModal">
         <div class="modal-header">
-            <div class="modal-title"><i class="fa-solid fa-book-medical" style="color: #fbbf24;"></i> First Aid Quick Guide</div>
-            <button class="close-modal-btn" onclick="closeModal('guideModal')"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-title"><i class="fa-solid fa-user-gear" style="color: #38bdf8;"></i> Account & Profile Settings</div>
+            <button class="close-modal-btn" onclick="closeModal('profileModal')"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <div class="guide-content">
-            <div class="guide-card">
-                <h4><i class="fa-solid fa-house-chimney-crack"></i> Lindol (Earthquake)</h4>
-                <p><strong>DROP, COVER, and HOLD ON!</strong> Tumingin ng matibay na mesa at magtago sa ilalim nito.</p>
+        <div class="profile-content">
+            <div class="profile-section-card">
+                <h3><i class="fa-solid fa-id-card"></i> Profile Information</h3>
+                <div class="info-row"><span class="info-label">Full Name:</span><span class="info-value" id="pfName">--</span></div>
+                <div class="info-row"><span class="info-label">Age & Bday:</span><span class="info-value" id="pfAgeBday">--</span></div>
+                <div class="info-row"><span class="info-label">Address:</span><span class="info-value" id="pfAddress">--</span></div>
+                <div class="info-row"><span class="info-label">ID Info:</span><span class="info-value" id="pfIdInfo">--</span></div>
             </div>
-            <div class="guide-card">
-                <h4><i class="fa-solid fa-heart-pulse"></i> CPR (Cardiopulmonary Resuscitation)</h4>
-                <p>I-compress ang gitna ng dibdib (100-120 beats kada minuto) gamit ang dalawang kamay.</p>
+
+            <!-- Update Contact Number -->
+            <div class="profile-section-card">
+                <h3><i class="fa-solid fa-phone"></i> Update Contact Number</h3>
+                <label class="form-group-label">Bagong Contact Number</label>
+				<input type="text" id="updateContact" class="pin-input" maxlength="11" placeholder="Bagong Contact Number">
+                <button class="profile-btn-action" onclick="saveContactChanges()">I-SAVE SA GOOGLE SHEET</button>
             </div>
-            <div class="guide-card">
-                <h4><i class="fa-solid fa-fire"></i> Sunog (Fire Emergency)</h4>
-                <p>Gumapang sa ilalim ng usok. Huwag nang bumalik para kumuha ng gamit.</p>
+
+            <!-- Update PIN Code -->
+            <div class="profile-section-card">
+                <h3><i class="fa-solid fa-key"></i> Security & PIN Management</h3>
+                <label class="form-group-label">Bagong 4-Digit PIN</label>
+                <input type="text" id="newPinVal" class="pin-input" maxlength="4" placeholder="Bagong 4-Digit PIN">
+                <button class="profile-btn-action" onclick="changePinCode()">PALITAN ANG PIN SA SHEET</button>
+            </div>
+
+            <!-- Session & Account Controls -->
+            <div class="profile-section-card" style="border-color: rgba(239, 68, 68, 0.2);">
+                <h3 style="color: #ef4444;"><i class="fa-solid fa-triangle-exclamation"></i> Session & Account Controls</h3>
+                <button class="profile-btn-action" style="background: #475569;" onclick="triggerLogout()">SIGN OUT (LOGOUT)</button>
+                <button class="profile-btn-danger" onclick="deleteAccountData()">DELETE ACCOUNT (PERMANENTE)</button>
             </div>
         </div>
     </div>
@@ -720,195 +382,273 @@
     <!-- Leaflet Map JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // Palitan ito ng iyong Google Apps Script Web App URL
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzIPK3Szza5h9vRs5KLZrDYNCPflEkQjyhwXsxZGsVNCNIHTStEa65u4OjbUcS991nTjQ/exec';
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzIPK3Szza5h9vRs5KLZrDYNCPflEkQjyhwXsxZGsVNCNIHTStEa65u4OjbUcS991nTjQ/exec";
 
-        let map, userMarker, currentLat = null, currentLng = null, mapInitialized = false;
-        let encodedFileString = null, uploadedFileName = null, uploadedFileType = null;
-        let pollingInterval = null;
-        let registeredPhone = "";
-        let registeredName = "";
+        window.addEventListener('DOMContentLoaded', () => {
+            if (sessionStorage.getItem('lgu_auth') === 'true') {
+                document.getElementById('pinLockScreen').style.display = 'none';
+                loadUserProfileData();
+            }
+        });
 
-        const defaultPins = [
-            { name: "LGU Evacuation Center", lat: 14.6010, lng: 120.9880, type: "Evacuation" },
-            { name: "City General Hospital", lat: 14.5950, lng: 120.9810, type: "Hospital" }
-        ];
+        function showRegForm(isReg) {
+            if (isReg) {
+                document.getElementById('loginBoxContainer').style.display = 'none';
+                document.getElementById('regFormContainer').style.display = 'block';
+            } else {
+                document.getElementById('loginBoxContainer').style.display = 'block';
+                document.getElementById('regFormContainer').style.display = 'none';
+            }
+        }
 
-        function handleFileSelect(input) {
-            if (input.files && input.files[0]) {
-                const file = input.files[0];
-                uploadedFileName = file.name;
-                uploadedFileType = file.type;
-
+        // Image Conversion Function for Base64
+        function previewAndConvertImage(input) {
+            const file = input.files[0];
+            if (file) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    encodedFileString = e.target.result;
-                    document.getElementById('uploadText').innerText = "Na-upload na: " + file.name;
-                    document.getElementById('uploadBox').style.borderColor = "#10b981";
-                };
+                reader.onloadend = function() {
+                    document.getElementById('regPhoto').value = reader.result;
+                }
                 reader.readAsDataURL(file);
             }
         }
 
-        function submitRegistration() {
-            registeredName = document.getElementById('regName').value.trim();
-            const age = document.getElementById('regAge').value.trim();
-            const bday = document.getElementById('regBday').value.trim();
-            const address = document.getElementById('regAddress').value.trim();
-            const idType = document.getElementById('regIdType').value.trim();
-            const idNum = document.getElementById('regIdNum').value.trim();
-            registeredPhone = document.getElementById('regPhone').value.trim();
-            const btn = document.getElementById('submitBtn');
+        // Login Verification
+        function verifyLogin() {
+            const contact = String(document.getElementById('loginContact').value).trim();
+            const pin = String(document.getElementById('loginPin').value).trim();
+            const errorBox = document.getElementById('pinError');
 
-            if (!registeredName || !age || !bday || !address || !idType || !idNum || !registeredPhone) {
-                alert("Pakiusap, punan ang lahat ng kinakailangang impormasyon.");
+            if (!contact || !pin) {
+                errorBox.innerText = "Ilagay ang Contact Number at PIN.";
+                errorBox.style.display = 'block';
                 return;
             }
 
-            if (!encodedFileString) {
-                alert("Paki-upload ang iyong Valid ID picture.");
-                return;
-            }
-
-            btn.innerText = "NAGPAPADALA...";
-            btn.disabled = true;
-
-            const payload = {
-                fullName: registeredName,
-                age: age,
-                birthday: bday,
-                address: address,
-                idType: idType,
-                idNumber: idNum,
-                contact: registeredPhone,
-                fileData: encodedFileString,
-                fileName: uploadedFileName,
-                fileType: uploadedFileType
-            };
+            errorBox.innerText = "Account Veryfying...";
+            errorBox.style.display = 'block';
 
             fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify(payload)
+                method: "POST",
+                body: JSON.stringify({ action: "login", contact: contact, pin: pin })
             })
-            .then(() => {
-                // Ilipat sa Pending Waiting Screen
-                document.getElementById('authScreen').style.display = 'none';
-                document.getElementById('pendingScreen').style.display = 'flex';
-                
-                // Simulan ang awtomatikong pagsusuri (polling) kada 5 segundo kung na-approve na
-                startStatusPolling();
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === "success") {
+                    sessionStorage.setItem('lgu_auth', 'true');
+                    sessionStorage.setItem('user_contact', data.contact);
+                    sessionStorage.setItem('user_name', data.fullName);
+                    sessionStorage.setItem('user_age', data.age);
+                    sessionStorage.setItem('user_bday', data.birthday);
+                    sessionStorage.setItem('user_address', data.address);
+                    sessionStorage.setItem('user_idtype', data.idType);
+                    sessionStorage.setItem('user_idnum', data.idNumber);
+                    
+                    document.getElementById('pinLockScreen').style.display = 'none';
+                    loadUserProfileData();
+                } else {
+                    errorBox.innerText = data.message || "Hindi makapasok. Baka Pending pa o mali ang detalye.";
+                    errorBox.style.display = 'block';
+                }
             })
-            .catch(error => {
-                alert("May nangyaring error sa pag-save: " + error);
-                btn.innerText = "ISUMITE ANG REGISTRATION";
-                btn.disabled = false;
+            .catch(() => {
+                errorBox.innerText = "Error sa koneksyon sa Google Sheet.";
+                errorBox.style.display = 'block';
             });
         }
 
-        function startStatusPolling() {
-            // Unang check agad paglipat
-            checkVerificationManually();
-            
-            // Ulitin kada 5 segundo (5000ms)
-            pollingInterval = setInterval(() => {
-                checkVerificationManually();
-            }, 5000);
+        // Registration na may String casting para hindi mawala ang unahang 0
+        function submitRegistration() {
+            const payload = {
+                action: "register",
+                fullName: document.getElementById('regName').value,
+                age: document.getElementById('regAge').value,
+                birthday: document.getElementById('regBday').value,
+                address: document.getElementById('regAddress').value,
+                idType: document.getElementById('regIdType').value,
+                idNumber: document.getElementById('regIdNum').value,
+                contact: String(document.getElementById('regContact').value).trim(), 
+                photo: document.getElementById('regPhoto').value,
+                pin: String(document.getElementById('regPin').value).trim()          
+            };
+
+            const errorBox = document.getElementById('regError');
+            if (!payload.fullName || !payload.contact || !payload.pin) {
+                errorBox.innerText = "Punan ang pangalan, contact number, at PIN code.";
+                errorBox.style.display = 'block';
+                return;
+            }
+
+            errorBox.innerText = "Sine-save sa Google Sheet...";
+            errorBox.style.display = 'block';
+
+            fetch(SCRIPT_URL, {
+                method: "POST",
+                body: JSON.stringify(payload)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === "success") {
+                    alert("Registration Successful! Mangyaring maghintay ng pag-apruba (Pending approval) bago makapag-login gamit ang iyong PIN.");
+                    showRegForm(false);
+                    errorBox.style.display = 'none';
+                } else {
+                    errorBox.innerText = data.message || "May error sa pag-rehistro.";
+                    errorBox.style.display = 'block';
+                }
+            })
+            .catch(() => {
+                errorBox.innerText = "Hindi makakonekta sa server.";
+                errorBox.style.display = 'block';
+            });
         }
 
-        function checkVerificationManually() {
-            if (!registeredPhone) return;
+        // UPDATE CONTACT NUMBER
+        function saveContactChanges() {
+            const currentContact = String(sessionStorage.getItem('user_contact') || "").trim();
+            const newContact = String(document.getElementById('updateContact').value).trim();
 
-            const checkUrl = `${SCRIPT_URL}?action=checkStatus&contact=${encodeURIComponent(registeredPhone)}`;
+            if (!currentContact) {
+                alert("Session expired. Mangyaring mag-login muli.");
+                return;
+            }
+
+            if (!newContact || newContact.length !== 11) {
+                alert("Ilagay ang wastong 11-digit na bagong contact number.");
+                return;
+            }
+
+            fetch(SCRIPT_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "updateContact", oldContact: currentContact, contact: newContact })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === "success") {
+                    sessionStorage.setItem('user_contact', newContact);
+                    alert("Matagumpay na na-update ang contact number sa Google Sheet!");
+                } else {
+                    alert("Error: " + data.message);
+                }
+            })
+            .catch(() => alert("Hindi maabot ang Google Sheet server."));
+        }
+
+        // UPDATE PIN CODE
+        function changePinCode() {
+            const currentContact = String(sessionStorage.getItem('user_contact') || "").trim();
+            const newPin = String(document.getElementById('newPinVal').value).trim();
+
+            if (!newPin || newPin.length !== 4) {
+                alert("Ilagay ang wastong 4-digit PIN.");
+                return;
+            }
+
+            fetch(SCRIPT_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "updatePin", contact: currentContact, pin: newPin })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === "success") {
+                    alert("Matagumpay na napalitan ang iyong PIN code sa Google Sheet!");
+                    document.getElementById('newPinVal').value = "";
+                } else {
+                    alert("Error: " + data.message);
+                }
+            })
+            .catch(() => alert("Hindi maabot ang Google Sheet server."));
+        }
+
+        function triggerLogout() {
+            sessionStorage.removeItem('lgu_auth');
+            document.getElementById('pinLockScreen').style.display = 'flex';
+            closeModal('profileModal');
+        }
+
+        // DELETE ACCOUNT
+        function deleteAccountData() {
+            const currentContact = String(sessionStorage.getItem('user_contact') || "").trim();
             
-            fetch(checkUrl)
+            if (!currentContact) {
+                alert("Walang aktibong session.");
+                return;
+            }
+
+            if (confirm("BABALA: Sigurado ka bang gusto mong burahin ang iyong account? Ang aksyong ito ay permanente at tatanggalin ang iyong rehistro sa Google Sheet.")) {
+                fetch(SCRIPT_URL, {
+                    method: "POST",
+                    body: JSON.stringify({ action: "deleteAccount", contact: currentContact })
+                })
                 .then(res => res.json())
                 .then(data => {
                     if (data.status === "success") {
-                        const vStatus = data.verificationStatus;
-                        document.getElementById('statusNotice').innerText = "Status: " + vStatus;
-
-                        if (vStatus.toLowerCase() === "approved") {
-                            clearInterval(pollingInterval); // Tigilan na ang pag-check
-                            
-                            // Ipakita ang Dashboard
-                            document.getElementById('pendingScreen').style.display = 'none';
-                            document.getElementById('dashboardContent').style.display = 'flex';
-                            document.getElementById('userGreeting').innerText = "Verified: " + registeredName;
-                        }
+                        alert("Matagumpay na nabura ang iyong account sa Google Sheet.");
+                        sessionStorage.clear();
+                        document.getElementById('pinLockScreen').style.display = 'flex';
+                        closeModal('profileModal');
+                    } else {
+                        alert("Error: " + data.message);
                     }
                 })
-                .catch(() => {
-                    // Pansamantalang error sa network habang nagpo-poll, hayaan lamang magpatuloy
-                });
+                .catch(() => alert("Hindi maabot ang Google Sheet server."));
+            }
         }
 
+		
+		function loadUserProfileData() {
+            document.getElementById('pfName').innerText = sessionStorage.getItem('user_name') || "--";
+            
+            // Linisin ang birthday para tanggalin ang timezone at oras kung meron man
+            let rawBday = sessionStorage.getItem('user_bday') || "";
+            let formattedBday = rawBday;
+            if (rawBday.includes('T')) {
+                // Kunin lamang ang bahagi bago ang 'T' (YYYY-MM-DD)
+                formattedBday = rawBday.split('T')[0];
+            }
+
+            document.getElementById('pfAgeBday').innerText = `${sessionStorage.getItem('user_age')} yrs / ${formattedBday}`;
+            document.getElementById('pfAddress').innerText = sessionStorage.getItem('user_address') || "--";
+            document.getElementById('pfIdInfo').innerText = `${sessionStorage.getItem('user_idtype')} (${sessionStorage.getItem('user_idnum')})`;
+            document.getElementById('updateContact').value = sessionStorage.getItem('user_contact') || "";
+        }
+
+        function navAction(target, element) {
+            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            if (target === 'profile') {
+                loadUserProfileData();
+                document.getElementById('profileModal').style.display = 'flex';
+            }
+        }
+
+        // MAP CONTROLS
+        let map, userMarker, currentLat = null, currentLng = null, mapInitialized = false;
         function openMapModal() {
             document.getElementById('mapModal').style.display = 'flex';
             if (!mapInitialized) {
                 map = L.map('map').setView([14.5995, 120.9842], 13);
                 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
-                defaultPins.forEach(pin => {
-                    L.marker([pin.lat, pin.lng]).addTo(map).bindPopup(`<b>${pin.type}:</b> ${pin.name}`);
-                });
                 mapInitialized = true;
             }
             setTimeout(() => { map.invalidateSize(); }, 200);
         }
-
-        function openGuideModal() { document.getElementById('guideModal').style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
         function locateUser() {
-            const statusBox = document.getElementById('gps-status');
-            statusBox.innerText = "Locating via GPS...";
             if ("geolocation" in navigator) {
-                navigator.geolocation.getCurrentPosition(
-                    (pos) => {
-                        currentLat = pos.coords.latitude;
-                        currentLng = pos.coords.longitude;
-                        showPosition(currentLat, currentLng, "GPS Location Detected");
-                    },
-                    () => { fetchIPLocation(); },
-                    { timeout: 5000 }
-                );
-            } else { fetchIPLocation(); }
-        }
-
-        function fetchIPLocation() {
-            fetch('https://ipapi.co/json/')
-                .then(res => res.json())
-                .then(data => {
-                    if (data.latitude) {
-                        currentLat = data.latitude;
-                        currentLng = data.longitude;
-                        showPosition(currentLat, currentLng, `Approximate: ${data.city}`);
-                    }
+                navigator.geolocation.getCurrentPosition((pos) => {
+                    currentLat = pos.coords.latitude;
+                    currentLng = pos.coords.longitude;
+                    map.setView([currentLat, currentLng], 16);
+                    if (userMarker) map.removeLayer(userMarker);
+                    userMarker = L.marker([currentLat, currentLng]).addTo(map).bindPopup("Iyong Lokasyon").openPopup();
+                    document.getElementById('gps-status').innerText = `Lokasyon nahanap!`;
                 });
-        }
-
-        function showPosition(lat, lng, label) {
-            map.setView([lat, lng], 16);
-            if (userMarker) map.removeLayer(userMarker);
-            userMarker = L.marker([lat, lng]).addTo(map).bindPopup(`<b>${label}</b>`).openPopup();
-            document.getElementById('gps-status').innerText = `${label} (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
-        }
-
-        function sendSOSViaSMS() {
-            if (!currentLat || !currentLng) {
-                alert("Paki-detect muna ang iyong location sa pamamagitan ng pag-click sa 'FIND MY LOCATION'");
-                return;
             }
-            const msg = `EMERGENCY! Kailangan ko ng tulong. Ang kinaroroonan ko: https://maps.google.com/?q=${currentLat},${currentLng}`;
-            window.location.href = `sms:?body=${encodeURIComponent(msg)}`;
         }
-
-        window.addEventListener('offline', () => { document.getElementById('offlineBar').style.display = 'block'; });
-        window.addEventListener('online', () => { document.getElementById('offlineBar').style.display = 'none'; });
-
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js').catch(() => {});
+        function sendSOSViaSMS() {
+            if (!currentLat) { alert("I-click muna ang Find My Location."); return; }
+            window.location.href = `sms:?body=${encodeURIComponent(`EMERGENCY! https://maps.google.com/?q=${currentLat},${currentLng}`)}`;
         }
     </script>
 </body>
