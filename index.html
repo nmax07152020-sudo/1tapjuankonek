@@ -42,13 +42,16 @@
         .logout-btn-top {
             background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3);
             color: #ef4444; padding: 5px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 5px;
+            transition: all 0.2s ease;
         }
+        .logout-btn-top:hover { background: rgba(239, 68, 68, 0.25); }
 
         /* EMERGENCY TICKER & HEADERS */
         .emergency-ticker {
             background: linear-gradient(90deg, #7f1d1d 0%, #dc2626 50%, #7f1d1d 100%);
             color: #ffffff; padding: 8px 12px; border-radius: 12px; font-size: 11px; font-weight: 800;
             display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 15px rgba(220, 38, 38, 0.3);
         }
         .siren-box { display: flex; align-items: center; gap: 6px; }
         .offline-bar { display: none; background: #b91c1c; color: white; text-align: center; padding: 8px; font-size: 11px; font-weight: 700; border-radius: 10px; }
@@ -58,41 +61,151 @@
             border-radius: 20px; padding: 14px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
         }
         .lgu-brand { display: flex; align-items: center; gap: 12px; }
-        .lgu-seal-logo { width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; }
+        .lgu-seal-logo { width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.3)); }
         .lgu-title-text h1 { font-size: 15px; font-weight: 800; color: #ffffff; }
         .lgu-title-text p { font-size: 10px; color: #38bdf8; font-weight: 700; text-transform: uppercase; }
         .header-right-group { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
         .online-badge { display: flex; align-items: center; gap: 6px; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); color: #10b981; padding: 5px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; }
-        .pulse-dot { width: 7px; height: 7px; background-color: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981; }
+        .pulse-dot { width: 7px; height: 7px; background-color: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981; animation: pulseGlow 1.5s infinite; }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
 
         /* MAIN DIAL & GRID */
         .main-dial-btn {
             background: linear-gradient(135deg, #ef4444 0%, #7f1d1d 100%); border-radius: 20px; padding: 16px;
-            color: white; text-decoration: none; display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white; text-decoration: none; display: flex; align-items: center; justify-content: space-between; 
+            border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
+        .main-dial-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 25px rgba(239, 68, 68, 0.6); }
         .dial-left { display: flex; align-items: center; gap: 12px; }
-        .phone-icon-wrap { width: 48px; height: 48px; background: rgba(255, 255, 255, 0.2); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
-        .dial-text h2 { font-size: 18px; font-weight: 900; }
+        .phone-icon-wrap { width: 48px; height: 48px; background: rgba(255, 255, 255, 0.2); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; animation: ringShake 2s infinite; }
+
+        @keyframes ringShake {
+            0% { transform: rotate(0deg); }
+            10% { transform: rotate(14deg); }
+            20% { transform: rotate(-14deg); }
+            30% { transform: rotate(10deg); }
+            40% { transform: rotate(-10deg); }
+            50% { transform: rotate(0deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        .dial-text h2 { font-size: 18px; font-weight: 900; letter-spacing: 0.5px; }
         .dial-text p { font-size: 11px; opacity: 0.9; }
-        .call-action-btn { width: 38px; height: 38px; background: #ffffff; color: #dc2626; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .call-action-btn { width: 38px; height: 38px; background: #ffffff; color: #dc2626; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
 
         .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .action-card { background: #182234; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 12px; color: white; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .action-card { 
+            background: linear-gradient(145deg, #131c2e 0%, #1a253a 100%); 
+            border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 12px; color: white; 
+            display: flex; align-items: center; gap: 10px; cursor: pointer; 
+            transition: all 0.25s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .action-card:hover { transform: translateY(-3px); border-color: rgba(56, 189, 248, 0.4); box-shadow: 0 8px 18px rgba(0,0,0,0.4); }
         .action-card-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
-        .card-map-icon { background: rgba(2, 132, 199, 0.2); color: #38bdf8; }
-        .card-aid-icon { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+        .card-map-icon { background: rgba(2, 132, 199, 0.2); color: #38bdf8; box-shadow: 0 0 10px rgba(2, 132, 199, 0.2); }
+        .card-aid-icon { background: rgba(245, 158, 11, 0.2); color: #fbbf24; box-shadow: 0 0 10px rgba(245, 158, 11, 0.2); }
         .action-card-text h3 { font-size: 12px; font-weight: 800; }
         .action-card-text p { font-size: 10px; color: #94a3b8; }
-        .section-header { font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-top: 4px; }
+        .section-header { font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-top: 4px; display: flex; align-items: center; gap: 6px; }
 
         .hotlines-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .lgu-card { background: #131c2e; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 18px; padding: 12px; text-decoration: none; color: white; display: flex; flex-direction: column; justify-content: space-between; height: 135px; }
+        
+        /* DEPARTMENT CARDS NA MAY SPECIAL GLOW & ANIMATION EFFECTS */
+        .lgu-card { 
+            background: linear-gradient(145deg, #131c2e 0%, #0d1322 100%); 
+            border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 18px; padding: 12px; 
+            text-decoration: none; color: white; display: flex; flex-direction: column; justify-content: space-between; 
+            height: 135px; position: relative; overflow: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+        }
+        .lgu-card::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+            transition: 0.5s;
+        }
+        .lgu-card:hover::before { left: 100%; }
+        .lgu-card:hover { transform: translateY(-4px); box-shadow: 0 10px 22px rgba(0,0,0,0.5); }
+
+        /* Specific Department Glow & Border Accents */
+        .card-fire:hover { border-color: rgba(234, 88, 12, 0.5); box-shadow: 0 8px 20px rgba(234, 88, 12, 0.25); }
+        .card-police:hover { border-color: rgba(59, 130, 246, 0.5); box-shadow: 0 8px 20px rgba(59, 130, 246, 0.25); }
+        .card-health:hover { border-color: rgba(16, 185, 129, 0.5); box-shadow: 0 8px 20px rgba(16, 185, 129, 0.25); }
+        .card-disaster:hover { border-color: rgba(245, 158, 11, 0.5); box-shadow: 0 8px 20px rgba(245, 158, 11, 0.25); }
+
         .card-top { display: flex; justify-content: space-between; align-items: center; }
-        .official-seal { width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; }
-        .official-seal svg { width: 100%; height: 100%; }
-        .tap-call-pill { background: rgba(255, 255, 255, 0.08); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #38bdf8; }
-        .dept-name { font-size: 12px; font-weight: 800; text-transform: uppercase; }
+        
+        /* Interactive Logo Effects */
+        .official-seal { 
+            width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; 
+            transition: transform 0.3s ease; 
+        }
+        .lgu-card:hover .official-seal { transform: scale(1.1) rotate(5deg); }
+        .official-seal svg { width: 100%; height: 100%; filter: drop-shadow(0 0 4px rgba(255,255,255,0.15)); }
+
+        .tap-call-pill { 
+            background: rgba(255, 255, 255, 0.08); width: 30px; height: 30px; border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; font-size: 11px; color: #38bdf8; 
+            transition: all 0.2s ease;
+        }
+        .lgu-card:hover .tap-call-pill { background: #38bdf8; color: #060913; box-shadow: 0 0 10px #38bdf8; }
+
+        .dept-name { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.3px; }
         .dept-contact { font-size: 10px; color: #94a3b8; font-weight: 600; }
+
+        /* ACCORDION STYLING PARA SA SERVICES */
+        .accordion-group { display: flex; flex-direction: column; gap: 8px; }
+        .accordion-header {
+            background: #131c2e; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px;
+            padding: 12px 14px; color: #ffffff; font-size: 12px; font-weight: 800; display: flex;
+            align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s;
+        }
+        .accordion-header:hover { background: #1a253a; border-color: rgba(56, 189, 248, 0.3); }
+        .accordion-header i.fa-chevron-down { transition: transform 0.3s ease; font-size: 11px; color: #38bdf8; }
+        .accordion-header.active i.fa-chevron-down { transform: rotate(180deg); }
+        
+        .accordion-content {
+            display: none; flex-direction: column; gap: 6px; max-height: 280px; overflow-y: auto; padding-right: 4px;
+        }
+        .accordion-content.show { display: flex; }
+
+        /* COMPACT LIST ITEM STYLES (DIRECT DIAL) */
+        .list-item-call {
+            background: #131c2e; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px;
+            padding: 10px 12px; display: flex; align-items: center; justify-content: space-between;
+            text-decoration: none; color: white; transition: all 0.2s ease;
+        }
+        .list-item-call:hover { background: #1a253a; border-color: rgba(56, 189, 248, 0.3); transform: translateX(2px); }
+        .list-item-info h4 { font-size: 11px; font-weight: 800; color: #ffffff; }
+        .list-item-info p { font-size: 10px; color: #94a3b8; font-weight: 600; margin-top: 1px; }
+        .list-call-icon {
+            width: 28px; height: 28px; background: rgba(56, 189, 248, 0.12); color: #38bdf8;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px;
+            transition: all 0.2s;
+        }
+        .list-item-call:hover .list-call-icon { background: #38bdf8; color: #060913; box-shadow: 0 0 8px #38bdf8; }
+
+        /* TAB / SECTION VIEWS */
+        .app-view { display: none; flex-direction: column; gap: 12px; width: 100%; }
+        .app-view.active-view { display: flex; }
+
+        /* UPDATES PLACEHOLDER */
+        .updates-placeholder {
+            background: #131c2e; border: 1px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 18px; padding: 30px 20px; text-align: center; color: #94a3b8;
+            display: flex; flex-direction: column; align-items: center; gap: 10px;
+        }
+        .updates-placeholder i { font-size: 28px; color: #38bdf8; margin-bottom: 4px; animation: bounceSlow 2s infinite; }
+
+        @keyframes bounceSlow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
 
         /* BOTTOM NAV */
         .bottom-nav {
@@ -100,9 +213,9 @@
             background: rgba(13, 19, 33, 0.95); backdrop-filter: blur(10px); border-top: 1px solid rgba(255, 255, 255, 0.1);
             display: flex; justify-content: space-around; padding: 10px 0; z-index: 900;
         }
-        .nav-item { background: none; border: none; color: #94a3b8; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; font-size: 10px; font-weight: 700; }
+        .nav-item { background: none; border: none; color: #94a3b8; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; font-size: 10px; font-weight: 700; transition: color 0.2s; }
         .nav-item i { font-size: 18px; }
-        .nav-item.active, .nav-item:hover { color: #38bdf8; }
+        .nav-item.active, .nav-item:hover { color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.4); }
 
         /* MODALS */
         .modal-overlay {
@@ -111,13 +224,23 @@
         }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .modal-title { font-size: 15px; font-weight: 800; color: #ffffff; display: flex; align-items: center; gap: 8px; }
-        .close-modal-btn { background: rgba(255, 255, 255, 0.1); border: none; color: #ffffff; width: 34px; height: 34px; border-radius: 50%; font-size: 16px; cursor: pointer; }
+        .close-modal-btn { background: rgba(255, 255, 255, 0.1); border: none; color: #ffffff; width: 34px; height: 34px; border-radius: 50%; font-size: 16px; cursor: pointer; transition: background 0.2s; }
+        .close-modal-btn:hover { background: rgba(239, 68, 68, 0.3); color: #ef4444; }
         
         #map { flex: 1; width: 100%; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); }
         .map-controls { margin-top: 10px; display: flex; flex-direction: column; gap: 8px; }
-        .locate-gps-btn { background: #10b981; color: white; border: none; border-radius: 12px; padding: 12px; font-weight: 800; font-size: 13px; cursor: pointer; }
-        .sms-sos-btn { background: #dc2626; color: white; border: none; border-radius: 12px; padding: 12px; font-weight: 800; font-size: 13px; cursor: pointer; }
+        .locate-gps-btn { background: #10b981; color: white; border: none; border-radius: 12px; padding: 12px; font-weight: 800; font-size: 13px; cursor: pointer; transition: background 0.2s; }
+        .locate-gps-btn:hover { background: #059669; }
+        .sms-sos-btn { background: #dc2626; color: white; border: none; border-radius: 12px; padding: 12px; font-weight: 800; font-size: 13px; cursor: pointer; transition: background 0.2s; }
+        .sms-sos-btn:hover { background: #b91c1c; }
         .gps-status-box { background: #182234; padding: 8px; border-radius: 8px; font-size: 10px; color: #cbd5e1; text-align: center; }
+
+        /* FIRST AID & SURVIVAL GUIDE MODAL STYLES */
+        .guide-content { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; padding-bottom: 20px; }
+        .guide-card { background: #131c2e; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 14px; }
+        .guide-card h3 { font-size: 13px; font-weight: 800; color: #fbbf24; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+        .guide-card ol { padding-left: 18px; font-size: 11px; color: #cbd5e1; display: flex; flex-direction: column; gap: 6px; }
+        .guide-card li::marker { font-weight: 800; color: #38bdf8; }
 
         .profile-content { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; padding-bottom: 20px; }
         .profile-section-card { background: #131c2e; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 14px; }
@@ -126,15 +249,97 @@
         .info-label { color: #94a3b8; font-weight: 600; }
         .info-value { color: #ffffff; font-weight: 700; text-align: right; }
         .form-group-label { font-size: 10px; color: #94a3b8; margin-bottom: 4px; display: block; font-weight: 700; }
-        .profile-btn-action { width: 100%; background: #0284c7; color: white; border: none; border-radius: 10px; padding: 10px; font-weight: 800; font-size: 12px; cursor: pointer; margin-top: 6px; }
-        .profile-btn-danger { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #ef4444; width: 100%; border-radius: 10px; padding: 10px; font-weight: 800; font-size: 12px; cursor: pointer; margin-top: 6px; }
-    </style>
+        .profile-btn-action { width: 100%; background: #0284c7; color: white; border: none; border-radius: 10px; padding: 10px; font-weight: 800; font-size: 12px; cursor: pointer; margin-top: 6px; transition: background 0.2s; }
+        .profile-btn-action:hover { background: #02689c; }
+        .profile-btn-danger { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #ef4444; width: 100%; border-radius: 10px; padding: 10px; font-weight: 800; font-size: 12px; cursor: pointer; margin-top: 6px; transition: background 0.2s; }
+        .profile-btn-danger:hover { background: rgba(239, 68, 68, 0.3); }
+
+        /* ADMIN LOGIN + DASHBOARD */
+        #adminLoginContainer { display:none; }
+        .admin-link {
+            background: transparent; border: 0; color: #f59e0b; cursor: pointer;
+            font-weight: 800; font-size: 12px; margin-top: 8px; text-decoration: underline;
+        }
+        .admin-panel {
+            position: fixed; inset: 0; z-index: 99999; display:none; overflow:auto;
+            background: #060913; color: #e5e7eb; padding: 18px;
+        }
+        .admin-wrap { max-width: 1100px; margin: 0 auto; }
+        .admin-header {
+            display:flex; justify-content:space-between; align-items:center; gap:12px;
+            padding:14px 16px; border:1px solid rgba(255,255,255,.12);
+            border-radius:16px; background:rgba(15,23,42,.92); margin-bottom:14px;
+        }
+        .admin-title { font-size:18px; font-weight:900; }
+        .admin-subtitle { color:#94a3b8; font-size:11px; margin-top:3px; }
+        .admin-btn {
+            border:0; border-radius:10px; padding:10px 13px; cursor:pointer;
+            font-weight:900; font-size:11px; margin:3px;
+        }
+        .admin-btn-refresh { background:#0284c7; color:white; }
+        .admin-btn-logout { background:#7f1d1d; color:white; }
+        .admin-stats {
+            display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:14px;
+        }
+        .admin-stat {
+            background:rgba(15,23,42,.92); border:1px solid rgba(255,255,255,.10);
+            border-radius:14px; padding:14px;
+        }
+        .admin-stat b { display:block; font-size:25px; color:#f59e0b; }
+        .admin-stat span { font-size:11px; color:#94a3b8; }
+        .admin-toolbar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:12px; }
+        .admin-search { flex:1; min-width:220px; background:#0f172a; color:#fff; border:1px solid rgba(255,255,255,.12); border-radius:10px; padding:11px 12px; font-size:12px; outline:none; }
+        .admin-search:focus { border-color:#38bdf8; }
+        .admin-btn-password { background:#7c3aed; color:white; }
+        .admin-btn-search { background:#0f766e; color:white; }
+        .admin-btn-clear { background:#475569; color:white; }
+        .admin-password-grid { display:grid; grid-template-columns:1fr; gap:9px; margin:12px 0; }
+        .admin-password-input { width:100%; box-sizing:border-box; background:#111827; color:#fff; border:1px solid rgba(255,255,255,.12); border-radius:10px; padding:11px; font-size:12px; }
+        .admin-status-approved { color:#4ade80; font-weight:900; }
+        .admin-status-rejected { color:#f87171; font-weight:900; }
+        .admin-table-wrap {
+            overflow:auto; background:rgba(15,23,42,.92); border:1px solid rgba(255,255,255,.10);
+            border-radius:16px;
+        }
+        .admin-table { width:100%; border-collapse:collapse; min-width:760px; }
+        .admin-table th,.admin-table td { padding:11px 10px; border-bottom:1px solid rgba(255,255,255,.08); text-align:left; font-size:12px; }
+        .admin-table th { color:#94a3b8; font-size:10px; text-transform:uppercase; }
+        .status-pending { color:#fbbf24; font-weight:900; }
+        .admin-empty { padding:35px; text-align:center; color:#94a3b8; }
+        #adminError { color:#fca5a5; font-size:12px; margin-top:8px; display:none; }
+        #adminLoading { color:#93c5fd; font-size:12px; margin:8px 0; display:none; }
+        .admin-modal {
+            position:fixed; inset:0; z-index:100000; display:none; align-items:center; justify-content:center;
+            background:rgba(0,0,0,.75); padding:14px;
+        }
+        .admin-modal-card {
+            width:min(650px,100%); max-height:92vh; overflow:auto; background:#0f172a;
+            border:1px solid rgba(255,255,255,.12); border-radius:18px; padding:18px;
+        }
+        .admin-detail-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:12px 0; }
+        .admin-detail { background:#111827; border-radius:10px; padding:9px; }
+        .admin-detail small { display:block; color:#64748b; font-size:9px; }
+        .admin-detail strong { display:block; font-size:12px; margin-top:3px; word-break:break-word; }
+        #adminIdPhoto { width:100%; max-height:310px; object-fit:contain; background:#020617; border-radius:12px; display:none; margin:10px 0; }
+        .admin-actions { display:flex; gap:8px; flex-wrap:wrap; }
+        .admin-approve { background:#166534; color:white; }
+        .admin-reject { background:#991b1b; color:white; }
+        .admin-close { background:#334155; color:white; }
+        @media(max-width:600px) {
+            .admin-stats { grid-template-columns:1fr 1fr; }
+            .admin-detail-grid { grid-template-columns:1fr; }
+            .admin-panel { padding:10px; }
+        }
+
+    
+        .sos-admin-card{margin:14px 0;padding:14px;border:1px solid rgba(239,68,68,.35);border-radius:14px;background:rgba(127,29,29,.12)}
+        .sos-admin-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.sos-admin-title{font-weight:900;color:#fca5a5}.sos-admin-badge{background:#dc2626;color:#fff;border-radius:999px;padding:5px 9px;font-size:10px;font-weight:900}.sos-list{display:grid;gap:8px;margin-top:10px}.sos-item{padding:11px;border-radius:11px;background:#0f172a;border:1px solid rgba(239,68,68,.25)}.sos-item strong{color:#fff}.sos-item small{color:#94a3b8}.sos-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.sos-action{border:0;border-radius:8px;padding:8px 10px;font-size:10px;font-weight:800;cursor:pointer}.sos-map{background:#0284c7;color:#fff}.sos-ack{background:#d97706;color:#fff}.sos-resolve{background:#16a34a;color:#fff}.sos-settings{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}.sos-settings input{flex:1;min-width:190px;padding:10px;border-radius:9px;border:1px solid #334155;background:#020617;color:#fff}.sos-popup{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,.78);z-index:9999;padding:18px}.sos-popup-card{width:min(430px,100%);background:#0f172a;border:2px solid #ef4444;border-radius:16px;padding:18px;box-shadow:0 18px 60px rgba(0,0,0,.5)}
+</style>
 </head>
 <body>
 
     <!-- PIN LOCK SCREEN / REGISTRATION FLOW -->
     <div id="pinLockScreen">
-        <!-- Step 4: Login via Contact Number & PIN -->
         <div class="pin-box" id="loginBoxContainer">
             <h2>🔐 Security Verification</h2>
             <p>I-enter ang iyong Contact Number at 4-Digit PIN para makapasok</p>
@@ -142,10 +347,10 @@
             <input type="password" id="loginPin" class="pin-input" maxlength="4" placeholder="4-Digit PIN">
             <button class="pin-btn" onclick="verifyLogin()">LOGIN</button>
             <button class="toggle-reg-link" onclick="showRegForm(true)">Wala pang account? Mag-rehistro</button>
+            <button class="admin-link" onclick="showAdminLogin(true)">🛡️ Admin Login</button>
             <div id="pinError" class="pin-error"></div>
         </div>
 
-        <!-- Step 1 & 2: Registration Form & Success Notification -->
         <div class="pin-box" id="regFormContainer" style="display: none; max-height: 90vh; overflow-y: auto;">
             <h2>📝 User Registration</h2>
             <p>Punan ang mga detalye</p>
@@ -157,19 +362,18 @@
                 <option value="PhilSys">PhilSys ID</option>
                 <option value="DriversLicense">Driver's License</option>
                 <option value="VotersID">Voter's ID</option>
-				<option value="VotersID">PRC ID</option>
-				<option value="VotersID">Passport ID</option>
-				<option value="VotersID">UMID ID</option>
-				<option value="VotersID">Postal ID</option>
-				<option value="VotersID">PhilHealth ID</option>
-				<option value="VotersID">TIN ID</option>
-				<option value="VotersID">Senior Citizen ID</option>
-				<option value="VotersID">PWD ID</option>
+				<option value="PRC">PRC ID</option>
+				<option value="Passport">Passport ID</option>
+				<option value="UMID">UMID ID</option>
+				<option value="Postal">Postal ID</option>
+				<option value="PhilHealth">PhilHealth ID</option>
+				<option value="TIN">TIN ID</option>
+				<option value="Senior">Senior Citizen ID</option>
+				<option value="PWD">PWD ID</option>
             </select>
             <input type="text" id="regIdNum" class="pin-input" placeholder="ID Number">
 			<input type="text" id="regContact" class="pin-input" maxlength="11" placeholder="Contact Number">
             
-            <!-- H. ID Photo Capture / Upload -->
             <label class="form-group-label" style="text-align: left; margin-bottom: 2px;">ID Photo (Camera o Upload)</label>
             <input type="file" id="regPhotoFile" class="pin-input" accept="image/*" capture="environment" style="padding: 8px; font-size: 11px;" onchange="previewAndConvertImage(this)">
             <input type="hidden" id="regPhoto">
@@ -179,6 +383,106 @@
             <button class="pin-btn" onclick="submitRegistration()">SUBMIT REGISTRATION</button>
             <button class="toggle-reg-link" onclick="showRegForm(false)">Bumalik sa Login</button>
             <div id="regError" class="pin-error"></div>
+        </div>
+
+        <div class="pin-box" id="adminLoginContainer" style="display:none;">
+            <h2>🛡️ Admin Login</h2>
+            <p>Authorized administrator only</p>
+            <input type="text" id="adminUsername" class="pin-input" autocomplete="username" placeholder="Admin Username">
+            <input type="password" id="adminPassword" class="pin-input" autocomplete="current-password" placeholder="Admin Password">
+            <button class="pin-btn" onclick="adminLogin()">ADMIN LOGIN</button>
+            <button class="toggle-reg-link" onclick="showAdminLogin(false)">Bumalik sa User Login</button>
+            <div id="adminLoginError" class="pin-error"></div>
+        </div>
+    </div>
+
+    <div id="adminPanel" class="admin-panel">
+        <div class="admin-wrap">
+            <div class="admin-header">
+                <div>
+                    <div class="admin-title">🛡️ Registration Admin Dashboard</div>
+                    <div class="admin-subtitle">Registrations • Search • Review ID • Approve / Reject</div>
+                </div>
+                <div>
+                    <button class="admin-btn admin-btn-password" onclick="openChangePassword()">🔑 Change Password</button>
+                    <button class="admin-btn admin-btn-refresh" onclick="loadPendingRegistrations()">↻ Refresh</button>
+                    <button class="admin-btn admin-btn-logout" onclick="adminLogout()">Logout</button>
+                </div>
+            </div>
+
+            <div class="admin-stats">
+                <div class="admin-stat"><b id="totalRegistrationCount">0</b><span>Total Registration</span></div>
+                <div class="admin-stat"><b id="pendingCount">0</b><span>Pending</span></div>
+                <div class="admin-stat"><b id="approvedCount">0</b><span>Approved</span></div>
+                <div class="admin-stat"><b id="rejectedCount">0</b><span>Rejected</span></div>
+            </div>
+
+            <div class="sos-admin-card">
+                <div class="sos-admin-head"><div class="sos-admin-title">🚨 SOS ALERTS <span id="sosNewBadge" class="sos-admin-badge">0 NEW</span></div><button class="admin-btn admin-btn-refresh" onclick="loadSOSAlerts(true)">↻ Refresh SOS</button></div>
+                <div class="sos-settings"><input id="sosAdminNumber" type="text" maxlength="11" placeholder="Admin SOS mobile number"><button class="admin-btn admin-btn-password" onclick="saveSOSAdminNumber()">SAVE SOS NUMBER</button></div>
+                <div style="font-size:10px;color:#94a3b8;margin-top:6px">Ang number na ito ang gagamitin ng client para sa pre-filled SMS SOS. Kailangan pa ring i-tap ng user ang Send sa SMS app.</div>
+                <div id="sosAlertList" class="sos-list"><div style="color:#94a3b8;font-size:11px">Loading SOS alerts...</div></div>
+            </div>
+
+            <div class="admin-toolbar">
+                <input id="adminSearchInput" class="admin-search" type="search" placeholder="Search name, contact, ID number, ID type or status..." onkeydown="if(event.key==='Enter') loadPendingRegistrations()">
+                <button class="admin-btn admin-btn-search" onclick="loadPendingRegistrations()">🔎 Search</button>
+                <button class="admin-btn admin-btn-clear" onclick="clearAdminSearch()">Clear</button>
+            </div>
+
+            <div id="adminLoading">Loading registrations...</div>
+            <div id="adminError"></div>
+            <div class="admin-table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th><th>Contact</th><th>ID Type</th><th>ID Number</th><th>Status</th><th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pendingTableBody"></tbody>
+                </table>
+                <div id="adminEmpty" class="admin-empty" style="display:none;">Walang registration na nakita. ✅</div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="sosPopup" class="sos-popup">
+      <div class="sos-popup-card">
+        <div style="font-size:20px;font-weight:900;color:#f87171">🚨 EMERGENCY SOS ALERT</div>
+        <div id="sosPopupText" style="margin:12px 0;color:#e2e8f0;font-size:13px;line-height:1.5"></div>
+        <div class="sos-actions"><button id="sosPopupMap" class="sos-action sos-map">📍 VIEW LOCATION</button><button class="sos-action sos-ack" onclick="acknowledgePopupSOS()">ACKNOWLEDGE</button><button class="sos-action" style="background:#475569;color:#fff" onclick="closeSOSPopup()">CLOSE</button></div>
+      </div>
+    </div>
+
+    <div id="changePasswordModal" class="admin-modal">
+        <div class="admin-modal-card">
+            <h3>🔑 Change Admin Password</h3>
+            <div style="color:#94a3b8;font-size:11px;margin:6px 0 12px;">Hindi mo na kailangang buksan ang Google Sheet para magpalit ng admin password.</div>
+            <div class="admin-password-grid">
+                <input id="adminCurrentPassword" class="admin-password-input" type="password" autocomplete="current-password" placeholder="Current Password">
+                <input id="adminNewPassword" class="admin-password-input" type="password" autocomplete="new-password" placeholder="New Password (minimum 8 characters)">
+                <input id="adminConfirmPassword" class="admin-password-input" type="password" autocomplete="new-password" placeholder="Confirm New Password">
+            </div>
+            <div id="changePasswordMessage" style="font-size:12px;margin:8px 0;display:none;"></div>
+            <div class="admin-actions">
+                <button class="admin-btn admin-btn-password" onclick="changeAdminPassword()">SAVE NEW PASSWORD</button>
+                <button class="admin-btn admin-close" onclick="closeChangePassword()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="adminDetailModal" class="admin-modal">
+        <div class="admin-modal-card">
+            <h3 id="adminDetailTitle">Registration Review</h3>
+            <div id="adminDetailLoading" style="color:#93c5fd;font-size:12px;margin:8px 0;">Loading...</div>
+            <img id="adminIdPhoto" alt="Uploaded ID Photo">
+            <div class="admin-detail-grid" id="adminDetailGrid"></div>
+            <div class="admin-actions">
+                <button class="admin-btn admin-approve" onclick="setRegistrationStatus('Approved')">✓ APPROVE</button>
+                <button class="admin-btn admin-reject" onclick="setRegistrationStatus('Rejected')">✕ REJECT</button>
+                <button class="admin-btn admin-close" onclick="closeAdminDetail()">Close</button>
+            </div>
         </div>
     </div>
 
@@ -212,116 +516,415 @@
             </div>
         </div>
 
-        <!-- MAIN DIAL -->
-        <a href="tel:911" class="main-dial-btn">
-            <div class="dial-left">
-                <div class="phone-icon-wrap"><i class="fa-solid fa-headset"></i></div>
-                <div class="dial-text"><h2>1-TAP DIAL 911</h2><p>Instant LGU Response Unit</p></div>
-            </div>
-            <div class="call-action-btn"><i class="fa-solid fa-phone"></i></div>
-        </a>
+        <!-- HOME VIEW -->
+        <div id="homeView" class="app-view active-view">
+            <!-- MAIN DIAL -->
+            <a href="tel:911" class="main-dial-btn">
+                <div class="dial-left">
+                    <div class="phone-icon-wrap"><i class="fa-solid fa-headset"></i></div>
+                    <div class="dial-text"><h2>DIAL 911</h2><p>Instant LGU Response Unit</p></div>
+                </div>
+                <div class="call-action-btn"><i class="fa-solid fa-phone"></i></div>
+            </a>
 
-        <div class="action-grid">
-            <div class="action-card" onclick="openMapModal()">
-                <div class="action-card-icon card-map-icon"><i class="fa-solid fa-map-location-dot"></i></div>
-                <div class="action-card-text"><h3>Emergency Map</h3><p>Find centers & GPS</p></div>
+            <div class="action-grid">
+                <div class="action-card" onclick="openMapModal()">
+                    <div class="action-card-icon card-map-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+                    <div class="action-card-text"><h3>Emergency Map</h3><p>Find centers & GPS</p></div>
+                </div>
+                <div class="action-card" onclick="openGuideModal()">
+                    <div class="action-card-icon card-aid-icon"><i class="fa-solid fa-kit-medical"></i></div>
+                    <div class="action-card-text"><h3>First Aid Guide</h3><p>Quick Survival steps</p></div>
+                </div>
             </div>
-            <div class="action-card" onclick="openGuideModal()">
-                <div class="action-card-icon card-aid-icon"><i class="fa-solid fa-kit-medical"></i></div>
-                <div class="action-card-text"><h3>First Aid Guide</h3><p>Quick Survival steps</p></div>
+
+            <div class="section-header"><i class="fa-solid fa-shield-heart" style="color: #38bdf8;"></i> Direct Emergency Units</div>
+
+            <!-- DEPARTMENT CARDS WITH ENHANCED LOGO EFFECTS -->
+            <div class="hotlines-grid">
+                <a href="tel:160" class="lgu-card card-fire">
+                    <div class="card-top">
+                        <div class="official-seal">
+                            <svg viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="46" fill="#7c2d12" stroke="#ea580c" stroke-width="2" />
+                                <circle cx="50" cy="50" r="38" fill="#1e293b" stroke="#f97316" stroke-width="1" />
+                                <path d="M22 22 L78 78 M78 22 L22 78" stroke="#cbd5e1" stroke-width="4.5" stroke-linecap="round" />
+                                <path d="M20 18 L28 26 M72 18 L80 26 M18 72 L26 80 M72 80 L80 72" stroke="#ef4444" stroke-width="3" />
+                                <path d="M28 64 C28 40 72 40 72 64 Z" fill="#c2410c" />
+                                <path d="M50 25 C50 25 64 40 64 54 C64 63 58 68 50 68 C42 68 36 63 36 54 C36 40 50 25 50 25 Z" fill="#f59e0b" />
+                                <path d="M50 38 C50 38 58 48 58 56 C58 61 54 64 50 64 C42 64 36 61 36 56 C42 48 50 38 50 38 Z" fill="#ef4444" />
+                                <path d="M50 48 C50 48 54 53 54 57 C54 60 52 62 50 62 C48 62 46 60 46 57 C46 53 50 48 50 48 Z" fill="#fef08a" />
+                            </svg>
+                        </div>
+                        <div class="tap-call-pill"><i class="fa-solid fa-phone-flip"></i></div>
+                    </div>
+                    <div>
+                        <div class="dept-name">Fire Station</div>
+                        <div class="dept-contact">BFP / Hotline 160</div>
+                    </div>
+                </a>
+
+                <a href="tel:117" class="lgu-card card-police">
+                    <div class="card-top">
+                        <div class="official-seal">
+                            <svg viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="46" fill="#1e3a8a" stroke="#fbbf24" stroke-width="2" />
+                                <path d="M50 14 L78 28 V52 C78 68 50 84 50 84 C50 84 22 68 22 52 V28 Z" fill="#1d4ed8" stroke="#ffffff" stroke-width="2" />
+                                <path d="M30 52 C30 38 40 30 50 30 C60 30 70 38 70 52 C70 66 60 72 50 72 C40 72 30 66 30 52 Z" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="4,2" />
+                                <circle cx="50" cy="50" r="9" fill="#f59e0b" />
+                                <polygon points="50,38 52,44 58,42 54,47 59,51 52,52 53,58 48,54 44,58 46,51 40,49 46,45 43,40 48,43" fill="#fbbf24" />
+                                <polygon points="50,18 52,23 57,23 53,26 55,31 50,28 45,31 47,26 43,23 48,23" fill="#ffffff" />
+                            </svg>
+                        </div>
+                        <div class="tap-call-pill"><i class="fa-solid fa-phone-flip"></i></div>
+                    </div>
+                    <div>
+                        <div class="dept-name">Police Station</div>
+                        <div class="dept-contact">PNP / Hotline 117</div>
+                    </div>
+                </a>
+
+                <a href="tel:143" class="lgu-card card-health">
+                    <div class="card-top">
+                        <div class="official-seal">
+                            <svg viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="46" fill="#064e3b" stroke="#10b981" stroke-width="2" />
+                                <circle cx="50" cy="50" r="40" fill="#ffffff" />
+                                <path d="M38 18 H62 V38 H82 V62 H62 V82 H38 V62 H18 V38 H38 Z" fill="#dc2626" />
+                                <circle cx="50" cy="50" r="39" fill="none" stroke="#dc2626" stroke-width="1.5" />
+                            </svg>
+                        </div>
+                        <div class="tap-call-pill"><i class="fa-solid fa-phone-flip"></i></div>
+                    </div>
+                    <div>
+                        <div class="dept-name">Health & Rescue</div>
+                        <div class="dept-contact">Red Cross / Hotline 143</div>
+                    </div>
+                </a>
+
+                <a href="tel:122" class="lgu-card card-disaster">
+                    <div class="card-top">
+                        <div class="official-seal">
+                            <svg viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="46" fill="#0c4a6e" stroke="#38bdf8" stroke-width="2" />
+                                <circle cx="50" cy="50" r="40" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5" />
+                                <g class="ocd-triangle">
+                                    <polygon points="50,18 80,72 20,72" fill="#ea580c" stroke="#ffffff" stroke-width="2" />
+                                    <polygon points="50,28 72,67 28,67" fill="#0284c7" />
+                                </g>
+                                <circle cx="50" cy="52" r="8" fill="#fbbf24" stroke="#ffffff" stroke-width="1.5" />
+                            </svg>
+                        </div>
+                        <div class="tap-call-pill"><i class="fa-solid fa-phone-flip"></i></div>
+                    </div>
+                    <div>
+                        <div class="dept-name">Disaster Rescue</div>
+                        <div class="dept-contact">MDRRMO / Hotline 122</div>
+                    </div>
+                </a>
             </div>
         </div>
 
-<div class="section-header">Direct Emergency Units</div>
-
-<!-- DEPARTMENT CARDS -->
-<div class="hotlines-grid">
-    <a href="tel:160" class="lgu-card card-fire">
-        <div class="card-top">
-            <div class="official-seal">
-                <svg viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="46" fill="#7c2d12" stroke="#ea580c" stroke-width="2" />
-                    <circle cx="50" cy="50" r="38" fill="#1e293b" stroke="#f97316" stroke-width="1" />
-                    <path d="M22 22 L78 78 M78 22 L22 78" stroke="#cbd5e1" stroke-width="4.5" stroke-linecap="round" />
-                    <path d="M20 18 L28 26 M72 18 L80 26 M18 72 L26 80 M72 80 L80 72" stroke="#ef4444" stroke-width="3" />
-                    <path d="M28 64 C28 40 72 40 72 64 Z" fill="#c2410c" />
-                    <path d="M50 25 C50 25 64 40 64 54 C64 63 58 68 50 68 C42 68 36 63 36 54 C36 40 50 25 50 25 Z" fill="#f59e0b" />
-                    <path d="M50 38 C50 38 58 48 58 56 C58 61 54 64 50 64 C46 64 42 61 42 56 C42 48 50 38 50 38 Z" fill="#ef4444" />
-                    <path d="M50 48 C50 48 54 53 54 57 C54 60 52 62 50 62 C48 62 46 60 46 57 C46 53 50 48 50 48 Z" fill="#fef08a" />
-                </svg>
+        <!-- SERVICES VIEW (Nasa loob na rin ang PNP Direct Contact List) -->
+        <div id="servicesView" class="app-view">
+            
+            <!-- PNP Direct Contact List (Added to Services Tab) -->
+            <div class="accordion-group">
+                <div class="accordion-header active" onclick="toggleAccordion('pnpContent', this)">
+                    <span><i class="fa-solid fa-shield-alt" style="color: #38bdf8; margin-right: 6px;"></i> Antipolo PNP</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div id="pnpContent" class="accordion-content">
+                    <a href="tel:86972409" class="list-item-call">
+                        <div class="list-item-info">
+                            <h4>PNP Antipolo</h4>
+                            <p>Cellphone: 0917-157-7627</p>
+                        </div>
+                        <div class="list-call-icon"><i class="fa-solid fa-phone"></i></div>
+                    </a>
+                </div>
             </div>
-            <div class="tap-call-pill"><i class="fa-solid fa-phone-flip"></i></div>
-        </div>
-        <div>
-            <div class="dept-name">Fire Station</div>
-            <div class="dept-contact">BFP / Hotline 160</div>
-        </div>
-    </a>
 
-    <a href="tel:117" class="lgu-card card-police">
-        <div class="card-top">
-            <div class="official-seal">
-                <svg viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="46" fill="#1e3a8a" stroke="#fbbf24" stroke-width="2" />
-                    <path d="M50 14 L78 28 V52 C78 68 50 84 50 84 C50 84 22 68 22 52 V28 Z" fill="#1d4ed8" stroke="#ffffff" stroke-width="2" />
-                    <path d="M30 52 C30 38 40 30 50 30 C60 30 70 38 70 52 C70 66 60 72 50 72 C40 72 30 66 30 52 Z" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="4,2" />
-                    <circle cx="50" cy="50" r="9" fill="#f59e0b" />
-                    <polygon points="50,38 52,44 58,42 54,47 59,51 52,52 53,58 48,54 44,58 46,51 40,49 46,45 43,40 48,43" fill="#fbbf24" />
-                    <polygon points="50,18 52,23 57,23 53,26 55,31 50,28 45,31 47,26 43,23 48,23" fill="#ffffff" />
-                </svg>
+            <!-- Antipolo City Health Office -->
+            <div class="accordion-group" style="margin-top: 4px;">
+                <div class="accordion-header" onclick="toggleAccordion('healthOfficeContent', this)">
+                    <span><i class="fa-solid fa-house-medical" style="color: #10b981; margin-right: 6px;"></i> Antipolo City Health Office</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div id="healthOfficeContent" class="accordion-content">
+                    <a href="tel:09165304707" class="list-item-call">
+                        <div class="list-item-info"><h4>Antipolo City Health Office</h4><p>Direct Call: 09165304707</p></div>
+                        <div class="list-call-icon"><i class="fa-solid fa-phone"></i></div>
+                    </a>
+                </div>
             </div>
-            <div class="tap-call-pill"><i class="fa-solid fa-phone-flip"></i></div>
-        </div>
-        <div>
-            <div class="dept-name">Police Station</div>
-            <div class="dept-contact">PNP / Hotline 117</div>
-        </div>
-    </a>
 
-    <a href="tel:143" class="lgu-card card-health">
-        <div class="card-top">
-            <div class="official-seal">
-                <svg viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="46" fill="#064e3b" stroke="#10b981" stroke-width="2" />
-                    <circle cx="50" cy="50" r="40" fill="#ffffff" />
-                    <path d="M38 18 H62 V38 H82 V62 H62 V82 H38 V62 H18 V38 H38 Z" fill="#dc2626" />
-                    <circle cx="50" cy="50" r="39" fill="none" stroke="#dc2626" stroke-width="1.5" />
-                </svg>
+            <!-- CDRRMO -->
+            <div class="accordion-group" style="margin-top: 4px;">
+                <div class="accordion-header" onclick="toggleAccordion('cdrrmoContent', this)">
+                    <span><i class="fa-solid fa-truck-medical" style="color: #f59e0b; margin-right: 6px;"></i> CDRRMO</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div id="cdrrmoContent" class="accordion-content">
+                    <a href="tel:09178640842" class="list-item-call">
+                        <div class="list-item-info"><h4>Antipolo CDRRMO</h4><p>Direct Call: 0917-864-0842</p></div>
+                        <div class="list-call-icon"><i class="fa-solid fa-phone"></i></div>
+                    </a>
+                </div>
             </div>
-            <div class="tap-call-pill"><i class="fa-solid fa-phone-flip"></i></div>
-        </div>
-        <div>
-            <div class="dept-name">Health & Rescue</div>
-            <div class="dept-contact">Red Cross / Hotline 143</div>
-        </div>
-    </a>
 
-    <a href="tel:122" class="lgu-card card-disaster">
-        <div class="card-top">
-            <div class="official-seal">
-                <svg viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="46" fill="#0c4a6e" stroke="#38bdf8" stroke-width="2" />
-                    <circle cx="50" cy="50" r="40" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5" />
-                    <g class="ocd-triangle">
-                        <polygon points="50,18 80,72 20,72" fill="#ea580c" stroke="#ffffff" stroke-width="2" />
-                        <polygon points="50,28 72,67 28,67" fill="#0284c7" />
-                    </g>
-                    <circle cx="50" cy="52" r="8" fill="#fbbf24" stroke="#ffffff" stroke-width="1.5" />
-                </svg>
+            <!-- Antipolo BFP -->
+            <div class="accordion-group" style="margin-top: 4px;">
+                <div class="accordion-header" onclick="toggleAccordion('bfpAntipoloContent', this)">
+                    <span><i class="fa-solid fa-fire-extinguisher" style="color: #ef4444; margin-right: 6px;"></i> Antipolo BFP</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div id="bfpAntipoloContent" class="accordion-content">
+                    <a href="tel:09451556015" class="list-item-call">
+                        <div class="list-item-info"><h4>Antipolo BFP</h4><p>Direct Call: 0945-155-6015</p></div>
+                        <div class="list-call-icon"><i class="fa-solid fa-phone"></i></div>
+                    </a>
+                </div>
             </div>
-            <div class="tap-call-pill"><i class="fa-solid fa-phone-flip"></i></div>
+
+            <!-- Barangay Rescue Units -->
+            <div class="accordion-group" style="margin-top: 4px;">
+                <div class="accordion-header" onclick="toggleAccordion('brgyContent', this)">
+                    <span><i class="fa-solid fa-shield-halved" style="color: #38bdf8; margin-right: 6px;"></i> Barangay Rescue Units (District 1&2)</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div id="brgyContent" class="accordion-content">
+                    <a href="tel:09456248906" class="list-item-call">
+                        <div class="list-item-info">
+                            <h4>Bagong Nayon</h4>
+                            <p>Cellphone: 0945-624-8906</p>
+							<p>Cellphone: 0962-391-2390</p>
+                        </div>
+                        <div class="list-call-icon"><i class="fa-solid fa-phone"></i></div>
+                    </a>
+                    <a href="tel:09300276922" class="list-item-call">
+                        <div class="list-item-info">
+                            <h4>Beverly Hills</h4>
+                            <p>Cellphone: 0930-027-6922</p>
+							<p>Cellphone: 0966-6614-839</p>
+							<p>Landline:  8658-3669</p>
+                        </div>
+                        <div class="list-call-icon"><i class="fa-solid fa-phone"></i></div>
+                    </a>
+                    <a href="tel:09606044446" class="list-item-call">
+                        <div class="list-item-info">
+                            <h4>Dela Paz</h4>
+                            <p>Cellphone: 0960-6044-446</p>
+							<p>Landline:  8260-0182</p>
+                        </div>
+                        <div class="list-call-icon"><i class="fa-solid fa-phone"></i></div>
+                    </a>
+                    <a href="tel:09287767525" class="list-item-call">
+                        <div class="list-item-info">
+                            <h4>Mambugan</h4>
+                            <p>Cellphone: 0928-776-7525</p>
+                        </div>
+                        <div class="list-call-icon"><i class="fa-solid fa-phone"></i></div>
+                    </a>
+					<a href="tel:09182887373" class="list-item-call">
+                        <div class="list-item-info">
+                            <h4>Mayamot</h4>
+                            <p>Cellphone: 0918-288-7373</p>
+							<p>Landline:  8470-6121</p>
+							<p>Landline:  8470-7935</p>
+							<p>Landline:  8880-4373</p>
+                        </div>
+                        <div class="list-call-icon"><i class="fa-solid fa-phone"></i></div>
+                    </a>
+					<a href="tel:09175151764" class="list-item-call">
+                        <div class="list-item-info">
+                            <h4>Muntindilaw</h4>
+                            <p>Cellphone: 0917-515-1764</p>	
+							<p>Landline:  8463-0534</p>
+							<p>Landline:  8463-0534</p>
+							<p>Landline:  8463-0534</p>
+                        </div>
+                        <div class="list-call-icon"><i class="fa-solid fa-phone"></i></div>
+                    </a>
+					<a href="tel:09338297656" class="list-item-call">
+                        <div class="list-item-info">
+                            <h4>San Isidro</h4>
+                            <p>Cellphone: 0933-8297-656</p>
+							<p>Cellphone: 0968-1315-885</p>
+                        </div>
+                        <div class="list-call-icon"><i class="fa-solid fa-phone"></i></div>
+                    </a>
+					<a href="tel:09286206373" class="list-item-call">
+                        <div class="list-item-info">
+                            <h4>Sta. Cruz</h4>
+                            <p>Cellphone: 0928-6206-373</p>
+							<p>Cellphone: 0912-9851-208</p>
+                        </div>
+                        <div class="list-call-icon"><i class="fa-solid fa-phone"></i></div>
+                    </a>
+					<a href="tel:09948339165" class="list-item-call">
+                        <div class="list-item-info">
+                            <h4>Calawis</h4>
+                            <p>Cellphone: 0994-833-9165</p>
+                        </div>
+                        <div class="list-call-icon"><i class="fa-solid fa-phone"></i></div>
+                    </a>
+					<a href="tel:096891872" class="list-item-call">
+                        <div class="list-item-info">
+                            <h4>Cupang</h4>
+                            <p>Cellphone: 0968-491-8172</p>
+							<p>Cellphone: 0910-524-9816</p>
+							<p>Cellphone: 0953-669-4295</p>
+                        </div>
+                        <div class="list-call-icon"><i class="fa-solid fa-phone"></i></div>
+                    </a>
+					<a href="tel:09198771019 " class="list-item-call">
+                        <div class="list-item-info">
+                            <h4>Dalig</h4>
+                            <p>Cellphone: 0919-877-1019</p>
+							<p>Landline: 8636-5114</p>
+                        </div>
+                        <div class="list-call-icon"><i class="fa-solid fa-phone"></i></div>
+                    </a>
+					<a href="tel:09560845977" class="list-item-call">
+                        <div class="list-item-info">
+                            <h4>Inarawan</h4>
+                            <p>Cellphone: 0956-084-5977</p>
+                        </div>
+                        <div class="list-call-icon"><i class="fa-solid fa-phone"></i></div>
+                    </a>
+					<a href="tel:09664486020" class="list-item-call">
+                        <div class="list-item-info">
+                            <h4>San Jose</h4>
+                            <p>Cellphone: 0966-448-6020</p>
+							<p>Cellphone: 0915-388-9567</p>
+							<p>Landline: 818-4641</p>
+                        </div>
+                        <div class="list-call-icon"><i class="fa-solid fa-phone"></i></div>
+                    </a>
+					<a href="tel:09686028496" class="list-item-call">
+                        <div class="list-item-info">
+                            <h4>San Juan</h4>
+                            <p>Cellphone: 0968-602-8496</p>
+                        </div>
+                        <div class="list-call-icon"><i class="fa-solid fa-phone"></i></div>
+                    </a>
+					<a href="tel:09564422732" class="list-item-call">
+                        <div class="list-item-info">
+                            <h4>San Luis</h4>
+                            <p>Cellphone: 0956-442-2732</p>
+							<p>Cellphone: 0967-291-4584</p>
+                        </div>
+                        <div class="list-call-icon"><i class="fa-solid fa-phone"></i></div>
+                    </a>
+					<a href="tel:09355325076" class="list-item-call">
+                        <div class="list-item-info">
+                            <h4>San Roque</h4>
+                            <p>Cellphone: 0935-532-5076</p>
+							<p>Cellphone:  0922-420-3099</p>
+							<p>Landline: 8696-7370</p>
+                        </div>
+                        <div class="list-call-icon"><i class="fa-solid fa-phone"></i></div>
+                    </a>
+                </div>
+            </div>
+            <!-- Hospital Emergency Hotlines -->
+            <div class="accordion-group" style="margin-top: 4px;">
+                <div class="accordion-header" onclick="toggleAccordion('hospContent', this)">
+                    <span><i class="fa-solid fa-hospital" style="color: #10b981; margin-right: 6px;"></i> Antipolo City Hospital Emergency Hotlines</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div id="hospContent" class="accordion-content">
+                    <a href="tel:80000001" class="list-item-call">
+                        <div class="list-item-info">
+                            <h4>Rizal Provincial Hospital System Annex II (Dalig)</h4>
+                            <p>Emergency Room: 8941-8518</p>
+                        </div>
+                        <div class="list-call-icon" style="color: #10b981; background: rgba(16, 185, 129, 0.12);"><i class="fa-solid fa-phone"></i></div>
+                    </a>
+                    <a href="tel:80000002" class="list-item-call">
+                        <div class="list-item-info">
+                            <h4>Antipolo City Hospital Annex III (Cabading)r</h4>
+                            <p>Emergency Room: 8475-1876</p>
+                        </div>
+                        <div class="list-call-icon" style="color: #10b981; background: rgba(16, 185, 129, 0.12);"><i class="fa-solid fa-phone"></i></div>
+                    </a>
+                    <a href="tel:80000003" class="list-item-call">
+                        <div class="list-item-info">
+                            <h4>Antipolo City Hospital Annex IV (Mambugan)</h4>
+                            <p>Emergency Room: 8687-1114</p>
+							<p>Emergency Room: 8687-1118</p>
+							<p>Emergency Room: 8687-1119</p>
+                        </div>
+                        <div class="list-call-icon" style="color: #10b981; background: rgba(16, 185, 129, 0.12);"><i class="fa-solid fa-phone"></i></div>
+                    </a>
+                </div>
+            </div>
         </div>
-        <div>
-            <div class="dept-name">Disaster Rescue</div>
-            <div class="dept-contact">MDRRMO / Hotline 122</div>
+
+
+
+        <!-- UPDATES VIEW -->
+        <div id="updatesView" class="app-view">
+            <div class="section-header"><i class="fa-solid fa-cloud-sun-rain" style="color:#38bdf8;"></i> Weather & Hazard Updates</div>
+
+            <!-- ANTIPOLO CITY WEATHER -->
+            <div class="updates-placeholder" style="padding:16px; text-align:left; align-items:stretch; margin-bottom:12px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;">
+                    <div style="display:flex;align-items:center;gap:10px;">
+                        <div style="width:38px;height:38px;border-radius:12px;background:rgba(56,189,248,.12);display:flex;align-items:center;justify-content:center;color:#38bdf8;">
+                            <i class="fa-solid fa-cloud-sun" style="font-size:18px;"></i>
+                        </div>
+                        <div>
+                            <h3 style="font-size:13px;color:#fff;">Antipolo City Weather</h3>
+                            <p style="font-size:10px;color:#94a3b8;">Live forecast • Antipolo City, Rizal</p>
+                        </div>
+                    </div>
+                    <button onclick="loadAntipoloWeather()" style="border:0;background:rgba(56,189,248,.12);color:#38bdf8;border-radius:9px;padding:8px 10px;cursor:pointer;font-size:10px;font-weight:800;">
+                        <i class="fa-solid fa-rotate"></i> Refresh
+                    </button>
+                </div>
+                <div id="antipoloWeatherNow" style="background:rgba(15,23,42,.65);border:1px solid rgba(148,163,184,.12);border-radius:12px;padding:12px;margin-bottom:10px;">
+                    <div style="font-size:11px;color:#94a3b8;">Loading Antipolo weather...</div>
+                </div>
+                <div id="antipoloForecast" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;"></div>
+                <div style="margin-top:9px;font-size:9px;color:#64748b;text-align:center;">
+                    Forecast data: Open-Meteo • Official warnings: DOST-PAGASA
+                </div>
+            </div>
+
+            <!-- PAGASA OFFICIAL UPDATES -->
+            <div class="updates-placeholder" style="padding:16px; text-align:left; align-items:stretch;">
+                <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+                    <div style="width:38px;height:38px;border-radius:12px;background:rgba(56,189,248,.12);display:flex;align-items:center;justify-content:center;color:#38bdf8;">
+                        <i class="fa-solid fa-cloud-bolt" style="font-size:18px;"></i>
+                    </div>
+                    <div>
+                        <h3 style="font-size:13px;color:#fff;">DOST-PAGASA</h3>
+                        <p style="font-size:10px;color:#94a3b8;">Weather, tropical cyclone & flood advisories</p>
+                    </div>
+                </div>
+                <p style="font-size:11px;color:#cbd5e1;line-height:1.5;margin-bottom:10px;">
+                    Para sa pinakabagong opisyal na weather reports, tropical cyclone warnings,
+                    rainfall warnings at flood advisories, gamitin ang official PAGASA page.
+                </p>
+                <a href="https://www.pagasa.dost.gov.ph/" target="_blank" rel="noopener noreferrer"
+                   style="display:flex;align-items:center;justify-content:center;gap:7px;background:#0284c7;color:#fff;text-decoration:none;border-radius:10px;padding:11px;font-size:11px;font-weight:800;">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> OPEN OFFICIAL PAGASA UPDATES
+                </a>
+                <div style="margin-top:8px;font-size:9px;color:#64748b;text-align:center;">
+                    Source: DOST-PAGASA • Official advisories only
+                </div>
+            </div>
         </div>
-    </a>
-</div>
+
+    </div>
 
     <!-- BOTTOM NAV -->
     <nav class="bottom-nav">
-        <button class="nav-item active" onclick="navAction('home', this)"><i class="fa-solid fa-house"></i><span>Home</span></button>
-        <button class="nav-item" onclick="navAction('services', this)"><i class="fa-solid fa-layer-group"></i><span>Services</span></button>
+        <button class="nav-item active" onclick="switchTab('home', this)"><i class="fa-solid fa-house"></i><span>Home</span></button>
+        <button class="nav-item" onclick="switchTab('services', this)"><i class="fa-solid fa-layer-group"></i><span>Services</span></button>
+        <button class="nav-item" onclick="switchTab('updates', this)"><i class="fa-solid fa-bell"></i><span>Updates</span></button>
         <button class="nav-item" onclick="navAction('profile', this)"><i class="fa-solid fa-user-shield"></i><span>Profile</span></button>
     </nav>
 
@@ -336,6 +939,96 @@
             <button class="locate-gps-btn" onclick="locateUser()"><i class="fa-solid fa-crosshairs"></i> FIND MY LOCATION</button>
             <button class="sms-sos-btn" onclick="sendSOSViaSMS()"><i class="fa-solid fa-comment-sms"></i> SEND SOS VIA SMS</button>
             <div class="gps-status-box" id="gps-status">Click button above to detect coordinates.</div>
+        </div>
+    </div>
+
+    <!-- FIRST AID & SURVIVAL GUIDE MODAL -->
+    <div class="modal-overlay" id="guideModal">
+        <div class="modal-header">
+            <div class="modal-title"><i class="fa-solid fa-kit-medical" style="color: #fbbf24;"></i> Quick Survival & First Aid Guide</div>
+            <button class="close-modal-btn" onclick="closeModal('guideModal')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="guide-content">
+            <!-- QUICK SURVIVAL STEPS (LINDOL / SUNOG) -->
+            <div class="guide-card" style="border-color: rgba(56, 189, 248, 0.4);">
+                <h3 style="color: #38bdf8;"><i class="fa-solid fa-person-falling-dashed"></i> Quick Survival Steps (Sakuna)</h3>
+                <ol>
+                    <li><strong>Lindol (Earthquake - Duck, Cover, and Hold):</strong> 
+                        <br>• Yuko (Duck) sa ilalim ng matibay na mesa o kasangkapan.
+                        <br>• Takpan (Cover) ang ulo at batok gamit ang mga braso.
+                        <br>• Kapit (Hold On) hanggang sa tumigil ang pagyanig. Lumayo sa mga salamin at bintana.
+                    </li>
+                    <li><strong>Sunog (Fire Emergency):</strong> 
+                        <br>• Kung may usok, gumapang malapit sa sahig kung saan mas malinis ang hangin.
+                        <br>• Ihinto ang pagtakbo kung nasusunog ang damit, humiga, takpan ang mukha, at gumulong (Stop, Drop, and Roll).
+                        <br>• Huwag nang bumalik sa loob ng nasusunog na gusali para kumuha ng gamit.
+                    </li>
+					     <li><strong>Baha (Flood):</strong> 
+                        <br>• Lumikas agad sa mas mataas na lugar bago pa tumaas ang tubig-baha.
+                        <br>• Huwag lumangoy o maglakad sa rumaragasang baha; ang 6 na pulgada ng mabilis na agos ay maaaring magpabagsak sa isang tao.
+                        <br>• Patayin ang pangunahing linya ng kuryente at gas sa bahay kung ligtas itong gawin.
+                    </li>
+                    <li><strong>Bagyo (Typhoon):</strong> 
+                        <br>• Manatili sa loob ng bahay at lumayo sa mga salamin o bintana na maaaring mabasag ng malakas na hangin.
+                        <br>• Ihanda ang mga emergency kit, flashlight, radyo, at inuming tubig.
+                        <br>• Makinig sa mga opisyal na weather bulletin at local LGU advisories.
+                    </li>
+                    <li><strong>Pagguho ng Lupa (Landslide):</strong> 
+                        <br>• Lumikas kaagad kung napansin ang mga senyales tulad ng biglang pagbitak ng lupa, paggalaw ng mga puno, o kakaibang tunog mula sa bundok/burol.
+                        <br>• Tumakbo patungo sa pinakamalapit na mataas na lugar na malayo sa landas ng pagguho.
+                    </li>
+                </ol>
+            </div>
+
+            <!-- CPR / BLS GUIDE -->
+            <div class="guide-card" style="border-color: rgba(239, 68, 68, 0.4);">
+                <h3 style="color: #ef4444;"><i class="fa-solid fa-heart-pulse"></i> CPR / BLS (Cardiopulmonary Resuscitation)</h3>
+                <ol>
+                    <li><strong>I-check ang Responsiveness at Ligtas na Paligid:</strong> Tapikin ang balikat ng biktima at itanong nang malakas, "Ayos ka lang ba?" Siguraduhing ligtas ang lugar bago lumapit.</li>
+                    <li><strong>Tumawag ng Saklolo:</strong> Ituro ang isang tao sa paligid at sabihing, "Tumawag ka ng 911 at kumuha ng AED kung meron!"</li>
+                    <li><strong>I-check ang Paghinga:</strong> Tingnan kung humihinga o normal ang paghinga ng biktima sa loob ng hindi bababa sa 10 segundo. Kung wala o humihinga lamang ay humihikbi (agonal breathing), simulan na agad ang CPR.</li>
+                    <li><strong>Chest Compressions (Paghilik/Pagdiin sa Dibdib):</strong> 
+                        <br>• Ipwesto ang sakong ng iyong kamay sa gitna ng dibdib ng biktima (sa ibabang kalahati ng sternum), at ipatong ang kabilang kamay sa ibabaw nito habang naka-lock ang mga siko.
+                        <br>• Diinan nang mabilis at mariing pababa (lalim na hindi bababa sa 2 pulgada o 5 cm para sa adult).
+                        <br>• Bilis: 100 hanggang 120 compressions bawat minuto (halintulad sa ritmo ng kanta na "Stayin' Alive").
+                    </li>
+                    <li><strong>Rescue Breaths (Optional para sa walang training):</strong> Kung may training ka, pagkatapos ng 30 compressions, buksan ang daanan ng hangin (Head-tilt, chin-lift) at magbigay ng 2 rescue breaths. Kung wala kang training, ituloy lamang ang continuous chest compressions (Hands-Only CPR).</li>
+                    <li><strong>Ipagpatuloy:</strong> Huwag itigil ang CPR hangga't walang dumarating na medical responders, may AED na nakahandang gamitin, o nagbalik ang malay at paghinga ng biktima.</li>
+                </ol>
+            </div>
+
+            <!-- PAGDURUGO -->
+            <div class="guide-card">
+                <h3><i class="fa-solid fa-droplet"></i> Pagdurugo (Bleeding)</h3>
+                <ol>
+                    <li>Magsuot ng gloves kung available para sa kaligtasan.</li>
+                    <li>Idiin nang direkta ang sugat gamit ang malinis na tela o gasa (sterile gauze).</li>
+                    <li>Itaas ang sugat na bahagi mas mataas kaysa sa antas ng puso kung maaari.</li>
+                    <li>Huwag tanggalin ang unang tela kung sakaling umagos pa rin; magdagdag lang ng isa pang patong sa ibabaw.</li>
+                </ol>
+            </div>
+
+            <!-- PASO O SUNOG -->
+            <div class="guide-card">
+                <h3><i class="fa-solid fa-fire-flame-curved"></i> Paso o Sunog (Burns)</h3>
+                <ol>
+                    <li>Ibuhos o patakbuhin ang malamig (hindi yelo) na gripo tubig sa paso sa loob ng 10 hanggang 20 minuto.</li>
+                    <li>Tanggalin ang mga alahas o masikip na damit bago mamaga ang bahagi.</li>
+                    <li>Huwag tusukin o galawin ang mga paltos (blisters).</li>
+                    <li>Takpan ng malinis at maluwag na telang hindi dumidikit ang sugat.</li>
+                </ol>
+            </div>
+
+            <!-- PAGKA-MABILAAUKAN -->
+            <div class="guide-card">
+                <h3><i class="fa-solid fa-head-side-cough"></i> Pagka-mabilaukan (Choking)</h3>
+                <ol>
+                    <li>Hikayatin ang biktima na umubo nang malakas kung kaya pa nito.</li>
+                    <li>Tumayo sa likod ng biktima at ilagay ang isang braso sa baywang nito para suportahan.</li>
+                    <li>I-pwesto ang nakakuyom na kamao sa itaas ng pusod ng biktima, sa ibaba ng tadyang.</li>
+                    <li>Mabilis at mariing hilahin papasok at paitaas (Heimlich Maneuver) hanggang sa mawala ang bara.</li>
+                </ol>
+            </div>
         </div>
     </div>
 
@@ -354,7 +1047,6 @@
                 <div class="info-row"><span class="info-label">ID Info:</span><span class="info-value" id="pfIdInfo">--</span></div>
             </div>
 
-            <!-- Update Contact Number -->
             <div class="profile-section-card">
                 <h3><i class="fa-solid fa-phone"></i> Update Contact Number</h3>
                 <label class="form-group-label">Bagong Contact Number</label>
@@ -362,7 +1054,6 @@
                 <button class="profile-btn-action" onclick="saveContactChanges()">I-SAVE SA GOOGLE SHEET</button>
             </div>
 
-            <!-- Update PIN Code -->
             <div class="profile-section-card">
                 <h3><i class="fa-solid fa-key"></i> Security & PIN Management</h3>
                 <label class="form-group-label">Bagong 4-Digit PIN</label>
@@ -370,7 +1061,6 @@
                 <button class="profile-btn-action" onclick="changePinCode()">PALITAN ANG PIN SA SHEET</button>
             </div>
 
-            <!-- Session & Account Controls -->
             <div class="profile-section-card" style="border-color: rgba(239, 68, 68, 0.2);">
                 <h3 style="color: #ef4444;"><i class="fa-solid fa-triangle-exclamation"></i> Session & Account Controls</h3>
                 <button class="profile-btn-action" style="background: #475569;" onclick="triggerLogout()">SIGN OUT (LOGOUT)</button>
@@ -385,11 +1075,23 @@
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzIPK3Szza5h9vRs5KLZrDYNCPflEkQjyhwXsxZGsVNCNIHTStEa65u4OjbUcS991nTjQ/exec";
 
         window.addEventListener('DOMContentLoaded', () => {
-            if (sessionStorage.getItem('lgu_auth') === 'true') {
+            if (sessionStorage.getItem('admin_auth') === 'true' && sessionStorage.getItem('admin_token')) {
+                document.getElementById('pinLockScreen').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                loadPendingRegistrations();
+                loadSOSAlerts(false);
+                sosPollTimer = setInterval(() => loadSOSAlerts(false), 10000);
+            } else if (sessionStorage.getItem('lgu_auth') === 'true') {
                 document.getElementById('pinLockScreen').style.display = 'none';
                 loadUserProfileData();
             }
         });
+
+        function toggleAccordion(contentId, headerElement) {
+            const content = document.getElementById(contentId);
+            content.classList.toggle('show');
+            headerElement.classList.toggle('active');
+        }
 
         function showRegForm(isReg) {
             if (isReg) {
@@ -401,7 +1103,6 @@
             }
         }
 
-        // Image Conversion Function for Base64
         function previewAndConvertImage(input) {
             const file = input.files[0];
             if (file) {
@@ -413,7 +1114,338 @@
             }
         }
 
-        // Login Verification
+
+        function showAdminLogin(show) {
+            document.getElementById('loginBoxContainer').style.display = show ? 'none' : 'block';
+            document.getElementById('regFormContainer').style.display = 'none';
+            document.getElementById('adminLoginContainer').style.display = show ? 'block' : 'none';
+            if (!show) document.getElementById('adminLoginError').style.display = 'none';
+        }
+
+        function adminLogin() {
+            const username = String(document.getElementById('adminUsername').value || '').trim();
+            const password = String(document.getElementById('adminPassword').value || '');
+            const error = document.getElementById('adminLoginError');
+
+            if (!username || !password) {
+                error.innerText = 'Ilagay ang Admin username at password.';
+                error.style.display = 'block';
+                return;
+            }
+
+            error.innerText = 'Admin account verifying...';
+            error.style.display = 'block';
+
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action:'adminLogin', username:username, password:password })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    sessionStorage.setItem('admin_token', data.token);
+                    sessionStorage.setItem('admin_auth', 'true');
+                    document.getElementById('pinLockScreen').style.display = 'none';
+                    document.getElementById('adminPanel').style.display = 'block';
+                    error.style.display = 'none';
+                    loadPendingRegistrations();
+                    loadSOSAlerts(false);
+                    if (sosPollTimer) clearInterval(sosPollTimer);
+                    sosPollTimer = setInterval(() => loadSOSAlerts(false), 10000);
+                } else {
+                    error.innerText = data.message || 'Hindi makapag-login bilang admin.';
+                    error.style.display = 'block';
+                }
+            })
+            .catch(() => {
+                error.innerText = 'Hindi makakonekta sa Google Apps Script.';
+                error.style.display = 'block';
+            });
+        }
+
+        function loadPendingRegistrations() {
+            const token = sessionStorage.getItem('admin_token') || '';
+            const query = String(document.getElementById('adminSearchInput')?.value || '').trim();
+            const loading = document.getElementById('adminLoading');
+            const err = document.getElementById('adminError');
+            const body = document.getElementById('pendingTableBody');
+            const empty = document.getElementById('adminEmpty');
+
+            loading.innerText = 'Loading registrations...';
+            loading.style.display = 'block';
+            err.style.display = 'none';
+            body.innerHTML = '';
+            empty.style.display = 'none';
+
+            fetch(SCRIPT_URL, {
+                method:'POST',
+                body:JSON.stringify({action:'adminGetRegistrations', token:token, query:query})
+            })
+            .then(res => res.json())
+            .then(data => {
+                loading.style.display = 'none';
+                if (data.status !== 'success') {
+                    err.innerText = data.message || 'Hindi ma-load ang registrations.';
+                    err.style.display = 'block';
+                    if ((data.message || '').toLowerCase().includes('expired')) adminLogout();
+                    return;
+                }
+
+                document.getElementById('totalRegistrationCount').innerText = data.total || 0;
+                document.getElementById('pendingCount').innerText = data.pending || 0;
+                document.getElementById('approvedCount').innerText = data.approved || 0;
+                document.getElementById('rejectedCount').innerText = data.rejected || 0;
+
+                if (!data.registrations || data.registrations.length === 0) {
+                    empty.style.display = 'block';
+                    return;
+                }
+
+                data.registrations.forEach(item => {
+                    const tr = document.createElement('tr');
+                    const statusClass = String(item.status).toLowerCase() === 'approved' ? 'admin-status-approved' : (String(item.status).toLowerCase() === 'rejected' ? 'admin-status-rejected' : 'status-pending');
+                    tr.innerHTML = `
+                        <td><strong>${escapeAdminHtml(item.fullName)}</strong></td>
+                        <td>${escapeAdminHtml(item.contact)}</td>
+                        <td>${escapeAdminHtml(item.idType)}</td>
+                        <td>${escapeAdminHtml(item.idNumber)}</td>
+                        <td class="${statusClass}">${escapeAdminHtml(item.status)}</td>
+                        <td><button class="admin-btn admin-btn-refresh" onclick="openAdminDetail('${escapeJs(item.contact)}')">Review</button></td>
+                    `;
+                    body.appendChild(tr);
+                });
+            })
+            .catch(() => {
+                loading.style.display = 'none';
+                err.innerText = 'Hindi maabot ang Google Apps Script.';
+                err.style.display = 'block';
+            });
+        }
+
+        function clearAdminSearch() {
+            const input = document.getElementById('adminSearchInput');
+            if (input) input.value = '';
+            loadPendingRegistrations();
+        }
+
+        function openChangePassword() {
+            document.getElementById('changePasswordModal').style.display = 'flex';
+            document.getElementById('changePasswordMessage').style.display = 'none';
+            document.getElementById('adminCurrentPassword').value = '';
+            document.getElementById('adminNewPassword').value = '';
+            document.getElementById('adminConfirmPassword').value = '';
+        }
+
+        function closeChangePassword() {
+            document.getElementById('changePasswordModal').style.display = 'none';
+        }
+
+        function changeAdminPassword() {
+            const token = sessionStorage.getItem('admin_token') || '';
+            const currentPassword = document.getElementById('adminCurrentPassword').value;
+            const newPassword = document.getElementById('adminNewPassword').value;
+            const confirmPassword = document.getElementById('adminConfirmPassword').value;
+            const msg = document.getElementById('changePasswordMessage');
+
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                msg.innerText = 'Punan ang lahat ng password fields.';
+                msg.style.color = '#fca5a5';
+                msg.style.display = 'block';
+                return;
+            }
+            if (newPassword.length < 8) {
+                msg.innerText = 'Minimum 8 characters ang bagong password.';
+                msg.style.color = '#fca5a5';
+                msg.style.display = 'block';
+                return;
+            }
+            if (newPassword !== confirmPassword) {
+                msg.innerText = 'Hindi magkapareho ang bagong password.';
+                msg.style.color = '#fca5a5';
+                msg.style.display = 'block';
+                return;
+            }
+
+            msg.innerText = 'Saving...';
+            msg.style.color = '#93c5fd';
+            msg.style.display = 'block';
+
+            fetch(SCRIPT_URL, {
+                method:'POST',
+                body:JSON.stringify({action:'adminChangePassword', token:token, currentPassword:currentPassword, newPassword:newPassword, confirmPassword:confirmPassword})
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    msg.innerText = data.message;
+                    msg.style.color = '#4ade80';
+                    setTimeout(closeChangePassword, 900);
+                } else {
+                    msg.innerText = data.message || 'Hindi napalitan ang password.';
+                    msg.style.color = '#fca5a5';
+                }
+            })
+            .catch(() => {
+                msg.innerText = 'Hindi maabot ang Google Apps Script.';
+                msg.style.color = '#fca5a5';
+            });
+        }
+
+        function openAdminDetail(contact) {
+            const token = sessionStorage.getItem('admin_token') || '';
+            const modal = document.getElementById('adminDetailModal');
+            const loading = document.getElementById('adminDetailLoading');
+            const grid = document.getElementById('adminDetailGrid');
+            const photo = document.getElementById('adminIdPhoto');
+
+            window.currentAdminContact = contact;
+            modal.style.display = 'flex';
+            loading.style.display = 'block';
+            grid.innerHTML = '';
+            photo.style.display = 'none';
+            photo.removeAttribute('src');
+
+            fetch(SCRIPT_URL, {
+                method:'POST',
+                body:JSON.stringify({action:'adminGetRegistration', token:token, contact:contact})
+            })
+            .then(res => res.json())
+            .then(data => {
+                loading.style.display = 'none';
+                if (data.status !== 'success') {
+                    grid.innerHTML = '<div class="admin-detail"><strong>' + escapeAdminHtml(data.message || 'Error') + '</strong></div>';
+                    return;
+                }
+
+                const r = data.registration;
+                const fields = [
+                    ['Full Name', r.fullName],
+                    ['Age', r.age],
+                    ['Birthday', r.birthday],
+                    ['Address', r.address],
+                    ['Contact', r.contact],
+                    ['ID Type', r.idType],
+                    ['ID Number', r.idNumber],
+                    ['Status', r.status]
+                ];
+
+                fields.forEach(pair => {
+                    grid.innerHTML += '<div class="admin-detail"><small>' + escapeAdminHtml(pair[0]) +
+                        '</small><strong>' + escapeAdminHtml(pair[1]) + '</strong></div>';
+                });
+
+                if (r.photo) {
+                    photo.src = r.photo;
+                    photo.style.display = 'block';
+                }
+            })
+            .catch(() => {
+                loading.style.display = 'none';
+                grid.innerHTML = '<div class="admin-detail"><strong>Hindi ma-load ang registration.</strong></div>';
+            });
+        }
+
+        function setRegistrationStatus(status) {
+            const contact = window.currentAdminContact || '';
+            const token = sessionStorage.getItem('admin_token') || '';
+            if (!contact) return;
+
+            const actionText = status === 'Approved' ? 'i-APPROVE' : 'i-REJECT';
+            if (!confirm('Sigurado ka bang gusto mong ' + actionText + ' ang registration na ito?')) return;
+
+            fetch(SCRIPT_URL, {
+                method:'POST',
+                body:JSON.stringify({
+                    action:'adminSetStatus',
+                    token:token,
+                    contact:contact,
+                    status:status
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert(status === 'Approved'
+                        ? 'Approved na ang registration. Maaari nang mag-login ang user.'
+                        : 'Rejected na ang registration.');
+                    closeAdminDetail();
+                    loadPendingRegistrations();
+                } else {
+                    alert(data.message || 'Hindi na-update ang status.');
+                }
+            })
+            .catch(() => alert('Hindi maabot ang Google Apps Script.'));
+        }
+
+        function closeAdminDetail() {
+            document.getElementById('adminDetailModal').style.display = 'none';
+            window.currentAdminContact = '';
+        }
+
+        let sosPollTimer = null;
+        let lastSOSAlertRow = null;
+
+        function loadSOSAlerts(showErrors) {
+            const token = sessionStorage.getItem('admin_token') || '';
+            if (!token) return;
+            fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'adminGetSOSAlerts',token:token})})
+            .then(res=>res.json()).then(data=>{
+                if(data.status !== 'success') return;
+                document.getElementById('sosNewBadge').innerText = `${data.newCount || 0} NEW`;
+                const list=document.getElementById('sosAlertList');
+                const alerts=data.alerts || [];
+                if(!alerts.length){ list.innerHTML='<div style="color:#94a3b8;font-size:11px">Walang SOS alert. ✅</div>'; return; }
+                list.innerHTML='';
+                alerts.slice(0,20).forEach(a=>{
+                    const div=document.createElement('div'); div.className='sos-item';
+                    const dt = a.dateTime ? new Date(a.dateTime).toLocaleString() : '';
+                    div.innerHTML=`<strong>🚨 ${escapeAdminHtml(a.name || 'Unknown')}</strong><br><small>${escapeAdminHtml(a.contact || '')} • ${escapeAdminHtml(dt)} • ${escapeAdminHtml(a.status || 'NEW')}</small><br><small>${escapeAdminHtml(a.message || 'Need emergency assistance')}</small><div class="sos-actions"><button class="sos-action sos-map" onclick="window.open('${escapeJs(a.mapsLink || '#')}','_blank')">📍 MAP</button>${String(a.status).toUpperCase()==='NEW'?`<button class="sos-action sos-ack" onclick="setSOSStatus(${a.row},'ACKNOWLEDGED')">ACKNOWLEDGE</button>`:''}<button class="sos-action sos-resolve" onclick="setSOSStatus(${a.row},'RESOLVED')">RESOLVE</button></div>`;
+                    list.appendChild(div);
+                });
+                const newest=alerts.find(a=>String(a.status).toUpperCase()==='NEW');
+                if(newest && lastSOSAlertRow !== null && Number(newest.row)!==Number(lastSOSAlertRow)){ showSOSPopup(newest); }
+                if(newest) lastSOSAlertRow=newest.row;
+            }).catch(()=>{ if(showErrors) alert('Hindi ma-load ang SOS alerts.'); });
+        }
+
+        function showSOSPopup(a){
+            document.getElementById('sosPopupText').innerHTML=`<b>${escapeAdminHtml(a.name || 'Unknown')}</b> needs assistance.<br>Contact: ${escapeAdminHtml(a.contact || 'N/A')}<br>Time: ${escapeAdminHtml(a.dateTime ? new Date(a.dateTime).toLocaleString() : '')}`;
+            document.getElementById('sosPopupMap').onclick=()=>window.open(a.mapsLink || '#','_blank');
+            window.currentPopupSOSRow=a.row; document.getElementById('sosPopup').style.display='flex';
+        }
+        function closeSOSPopup(){document.getElementById('sosPopup').style.display='none';}
+        function acknowledgePopupSOS(){ if(window.currentPopupSOSRow) setSOSStatus(window.currentPopupSOSRow,'ACKNOWLEDGED'); closeSOSPopup(); }
+        function setSOSStatus(row,status){
+            const token=sessionStorage.getItem('admin_token')||'';
+            fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'adminSetSOSStatus',token:token,row:row,status:status})}).then(r=>r.json()).then(d=>{if(d.status==='success') loadSOSAlerts(false); else alert(d.message||'Error sa SOS status.');}).catch(()=>alert('Hindi maabot ang server.'));
+        }
+        function saveSOSAdminNumber(){
+            const token=sessionStorage.getItem('admin_token')||''; const number=String(document.getElementById('sosAdminNumber').value||'').trim();
+            fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'adminSetSOSNumber',token:token,number:number})}).then(r=>r.json()).then(d=>alert(d.message||'Done')).catch(()=>alert('Hindi ma-save ang SOS number.'));
+        }
+
+        function adminLogout() {
+            if (sosPollTimer) { clearInterval(sosPollTimer); sosPollTimer = null; }
+            sessionStorage.removeItem('admin_token');
+            sessionStorage.removeItem('admin_auth');
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('pinLockScreen').style.display = 'flex';
+            showAdminLogin(false);
+            document.getElementById('adminUsername').value = '';
+            document.getElementById('adminPassword').value = '';
+        }
+
+        function escapeAdminHtml(value) {
+            return String(value == null ? '' : value)
+                .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+                .replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+                .replace(/'/g,'&#039;');
+        }
+
+        function escapeJs(value) {
+            return String(value == null ? '' : value).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+        }
+
         function verifyLogin() {
             const contact = String(document.getElementById('loginContact').value).trim();
             const pin = String(document.getElementById('loginPin').value).trim();
@@ -425,7 +1457,7 @@
                 return;
             }
 
-            errorBox.innerText = "Account Veryfying...";
+            errorBox.innerText = "Account Verifying...";
             errorBox.style.display = 'block';
 
             fetch(SCRIPT_URL, {
@@ -457,7 +1489,6 @@
             });
         }
 
-        // Registration na may String casting para hindi mawala ang unahang 0
         function submitRegistration() {
             const payload = {
                 action: "register",
@@ -503,7 +1534,6 @@
             });
         }
 
-        // UPDATE CONTACT NUMBER
         function saveContactChanges() {
             const currentContact = String(sessionStorage.getItem('user_contact') || "").trim();
             const newContact = String(document.getElementById('updateContact').value).trim();
@@ -534,7 +1564,6 @@
             .catch(() => alert("Hindi maabot ang Google Sheet server."));
         }
 
-        // UPDATE PIN CODE
         function changePinCode() {
             const currentContact = String(sessionStorage.getItem('user_contact') || "").trim();
             const newPin = String(document.getElementById('newPinVal').value).trim();
@@ -566,7 +1595,6 @@
             closeModal('profileModal');
         }
 
-        // DELETE ACCOUNT
         function deleteAccountData() {
             const currentContact = String(sessionStorage.getItem('user_contact') || "").trim();
             
@@ -595,15 +1623,12 @@
             }
         }
 
-		
 		function loadUserProfileData() {
             document.getElementById('pfName').innerText = sessionStorage.getItem('user_name') || "--";
             
-            // Linisin ang birthday para tanggalin ang timezone at oras kung meron man
             let rawBday = sessionStorage.getItem('user_bday') || "";
             let formattedBday = rawBday;
             if (rawBday.includes('T')) {
-                // Kunin lamang ang bahagi bago ang 'T' (YYYY-MM-DD)
                 formattedBday = rawBday.split('T')[0];
             }
 
@@ -613,17 +1638,62 @@
             document.getElementById('updateContact').value = sessionStorage.getItem('user_contact') || "";
         }
 
-        function navAction(target, element) {
+        async function loadAntipoloWeather() {
+            const nowBox = document.getElementById('antipoloWeatherNow');
+            const forecastBox = document.getElementById('antipoloForecast');
+            if (!nowBox || !forecastBox) return;
+            nowBox.innerHTML = '<div style="font-size:11px;color:#94a3b8;"><i class="fa-solid fa-spinner fa-spin"></i> Loading Antipolo weather...</div>';
+            forecastBox.innerHTML = '';
+            try {
+                const url = 'https://api.open-meteo.com/v1/forecast?latitude=14.5865&longitude=121.1750&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FManila&forecast_days=4';
+                const res = await fetch(url);
+                if (!res.ok) throw new Error('Weather service unavailable');
+                const d = await res.json();
+                const weatherText = code => ({0:'Clear sky',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',48:'Rime fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',80:'Rain showers',81:'Rain showers',82:'Heavy rain showers',95:'Thunderstorm',96:'Thunderstorm with hail',99:'Thunderstorm with hail'})[code] || 'Weather update';
+                const icon = code => code >= 95 ? '⛈️' : code >= 80 ? '🌦️' : code >= 51 ? '🌧️' : code >= 3 ? '☁️' : '☀️';
+                nowBox.innerHTML = `
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+                        <div><div style="font-size:25px;font-weight:900;color:#fff;">${Math.round(d.current.temperature_2m)}°C</div><div style="font-size:11px;color:#cbd5e1;">Feels like ${Math.round(d.current.apparent_temperature)}°C • ${weatherText(d.current.weather_code)}</div></div>
+                        <div style="font-size:34px;">${icon(d.current.weather_code)}</div>
+                    </div>
+                    <div style="display:flex;gap:12px;margin-top:8px;font-size:9px;color:#94a3b8;"><span>💧 ${d.current.relative_humidity_2m}% humidity</span><span>💨 ${Math.round(d.current.wind_speed_10m)} km/h wind</span></div>`;
+                d.daily.time.forEach((date, i) => {
+                    const dt = new Date(date + 'T00:00:00+08:00');
+                    const day = i === 0 ? 'Today' : dt.toLocaleDateString('en-PH',{weekday:'short'});
+                    forecastBox.innerHTML += `<div style="background:rgba(15,23,42,.65);border:1px solid rgba(148,163,184,.12);border-radius:10px;padding:8px;text-align:center;"><div style="font-size:9px;color:#94a3b8;font-weight:800;">${day}</div><div style="font-size:20px;margin:3px 0;">${icon(d.daily.weather_code[i])}</div><div style="font-size:10px;color:#fff;font-weight:800;">${Math.round(d.daily.temperature_2m_max[i])}° / ${Math.round(d.daily.temperature_2m_min[i])}°</div><div style="font-size:8px;color:#38bdf8;margin-top:3px;">Rain ${d.daily.precipitation_probability_max[i] ?? 0}%</div></div>`;
+                });
+            } catch (err) {
+                nowBox.innerHTML = '<div style="font-size:11px;color:#fca5a5;">Hindi ma-load ang Antipolo weather. I-check ang internet connection o pindutin ang Refresh.</div>';
+            }
+        }
+
+        function switchTab(target, element) {
             document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
             element.classList.add('active');
+
+            document.querySelectorAll('.app-view').forEach(view => view.classList.remove('active-view'));
+            
+            if (target === 'home') {
+                document.getElementById('homeView').classList.add('active-view');
+            } else if (target === 'services') {
+                document.getElementById('servicesView').classList.add('active-view');
+            } else if (target === 'updates') {
+                document.getElementById('updatesView').classList.add('active-view');
+                loadAntipoloWeather();
+            }
+        }
+
+        function navAction(target, element) {
             if (target === 'profile') {
+                document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+                element.classList.add('active');
                 loadUserProfileData();
                 document.getElementById('profileModal').style.display = 'flex';
             }
         }
 
-        // MAP CONTROLS
         let map, userMarker, currentLat = null, currentLng = null, mapInitialized = false;
+        
         function openMapModal() {
             document.getElementById('mapModal').style.display = 'flex';
             if (!mapInitialized) {
@@ -633,8 +1703,17 @@
             }
             setTimeout(() => { map.invalidateSize(); }, 200);
         }
+
+        function openGuideModal() {
+            document.getElementById('guideModal').style.display = 'flex';
+        }
+
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        
         function locateUser() {
+            const statusBox = document.getElementById('gps-status');
+            statusBox.innerText = "Hinahanap ang iyong GPS location...";
+            
             if ("geolocation" in navigator) {
                 navigator.geolocation.getCurrentPosition((pos) => {
                     currentLat = pos.coords.latitude;
@@ -642,13 +1721,46 @@
                     map.setView([currentLat, currentLng], 16);
                     if (userMarker) map.removeLayer(userMarker);
                     userMarker = L.marker([currentLat, currentLng]).addTo(map).bindPopup("Iyong Lokasyon").openPopup();
-                    document.getElementById('gps-status').innerText = `Lokasyon nahanap!`;
-                });
+                    statusBox.innerText = `GPS Lokasyon nahanap!`;
+                }, (err) => {
+                    statusBox.innerText = "Gumagamit ng IP Location fallback...";
+                    fetch('https://ipapi.co/json/')
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.latitude && data.longitude) {
+                                currentLat = data.latitude;
+                                currentLng = data.longitude;
+                                map.setView([currentLat, currentLng], 14);
+                                if (userMarker) map.removeLayer(userMarker);
+                                userMarker = L.marker([currentLat, currentLng]).addTo(map).bindPopup(`IP Location: ${data.city || 'Area'}`).openPopup();
+                                statusBox.innerText = `Nahanap ang lokasyon sa pamamagitan ng IP (${data.city || 'Area'})`;
+                            } else {
+                                throw new Error();
+                            }
+                        })
+                        .catch(() => {
+                            statusBox.innerText = "Hindi ma-detect ang lokasyon. Pakitiyak na naka-on ang GPS.";
+                        });
+                }, { timeout: 10000 });
+            } else {
+                statusBox.innerText = "Hindi sinusuportahan ng iyong browser ang Geolocation.";
             }
         }
+
         function sendSOSViaSMS() {
-            if (!currentLat) { alert("I-click muna ang Find My Location."); return; }
-            window.location.href = `sms:?body=${encodeURIComponent(`EMERGENCY! https://maps.google.com/?q=${currentLat},${currentLng}`)}`;
+            if (!currentLat || !currentLng) { alert("I-click muna ang Find My Location."); return; }
+            const name = sessionStorage.getItem('user_name') || 'Emergency User';
+            const contact = sessionStorage.getItem('user_contact') || '';
+            const maps = `https://maps.google.com/?q=${currentLat},${currentLng}`;
+            const payload = {action:'createSOS', name:name, contact:contact, latitude:currentLat, longitude:currentLng, locationSource:'GPS', message:'Need emergency assistance'};
+            fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(payload)})
+            .then(res=>res.json()).then(data=>{
+                if(data.status !== 'success'){ alert(data.message || 'Hindi na-save ang SOS.'); return; }
+                const number = String(data.adminNumber || '').trim();
+                const smsBody = `EMERGENCY SOS! ${name} needs assistance. Location: ${maps}`;
+                const target = number ? `sms:${number}?body=${encodeURIComponent(smsBody)}` : `sms:?body=${encodeURIComponent(smsBody)}`;
+                window.location.href = target;
+            }).catch(()=>{ alert('Hindi ma-save ang SOS sa server.'); });
         }
     </script>
 </body>
