@@ -479,26 +479,39 @@
         }
 
     
-        /* Birthday field label - mobile friendly */
-        .reg-field-label{
-            display:block;
+        /* Birthday text inside the date box */
+        .birthday-field{
+            position:relative;
             width:100%;
-            box-sizing:border-box;
-            margin:10px 0 6px;
-            padding:0 4px;
+            margin-bottom:12px;
+        }
+        .birthday-field .birthday-text{
+            position:absolute;
+            left:0;
+            top:0;
+            width:100%;
+            height:100%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
             color:#aebbd3;
             font-size:14px;
-            font-weight:700;
-            text-align:left;
-            letter-spacing:.2px;
+            font-weight:600;
+            pointer-events:none;
+            z-index:2;
         }
-        #regBday{
+        .birthday-field #regBday{
+            margin-bottom:0;
             color-scheme:dark;
         }
+        .birthday-field #regBday.is-empty{
+            color:transparent;
+        }
+        .birthday-field #regBday:not(.is-empty){
+            color:#fff;
+        }
         @media (max-width:600px){
-            .reg-field-label{
-                margin-top:8px;
-                margin-bottom:6px;
+            .birthday-field .birthday-text{
                 font-size:14px;
             }
         }
@@ -552,7 +565,10 @@
             <p>Punan ang mga detalye</p>
             <input type="text" id="regName" class="pin-input" placeholder="Full Name">
             <input type="number" id="regAge" class="pin-input" placeholder="Age">
-            <input type="date" id="regBday" class="pin-input" aria-label="Birthday">
+            <div class="birthday-field">
+                <span class="birthday-text">Birthday</span>
+                <input type="date" id="regBday" class="pin-input is-empty" aria-label="Birthday">
+            </div>
             <input type="text" id="regAddress" class="pin-input" placeholder="Address">
             <select id="regIdType" class="pin-input">
                 <option value="PhilSys">PhilSys ID</option>
@@ -1972,5 +1988,19 @@
             }).catch(()=>{ alert('Hindi ma-save ang SOS sa server.'); });
         }
     </script>
+
+<script>
+(function(){
+    const bday = document.getElementById('regBday');
+    if(!bday) return;
+    const syncBirthdayText = () => {
+        bday.classList.toggle('is-empty', !bday.value);
+    };
+    bday.addEventListener('change', syncBirthdayText);
+    bday.addEventListener('input', syncBirthdayText);
+    bday.addEventListener('focus', syncBirthdayText);
+    syncBirthdayText();
+})();
+</script>
 </body>
 </html>
