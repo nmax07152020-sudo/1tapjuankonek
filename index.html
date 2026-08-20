@@ -1390,7 +1390,7 @@
             if (!token) return;
             fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'adminGetSOSAlerts',token:token})})
             .then(res=>res.json()).then(data=>{
-                if(data.status !== 'success') return;
+                if(data.status !== 'success'){ if(showErrors) alert(data.message || 'SOS server error.'); return;}
                 document.getElementById('sosNewBadge').innerText = `${data.newCount || 0} NEW`;
                 const list=document.getElementById('sosAlertList');
                 const alerts=data.alerts || [];
@@ -1405,7 +1405,7 @@
                 const newest=alerts.find(a=>String(a.status).toUpperCase()==='NEW');
                 if(newest && lastSOSAlertRow !== null && Number(newest.row)!==Number(lastSOSAlertRow)){ showSOSPopup(newest); }
                 if(newest) lastSOSAlertRow=newest.row;
-            }).catch(()=>{ if(showErrors) alert('Hindi ma-load ang SOS alerts.'); });
+            }).catch((err)=>{ if(showErrors) alert('Hindi ma-load ang SOS alerts: ' + (err && err.message ? err.message : 'Network/server error')); });
         }
 
         function showSOSPopup(a){
