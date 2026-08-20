@@ -478,7 +478,31 @@
             .login-features { margin-top: 8px; }
         }
 
-    </style>
+    
+        /* Birthday field label - mobile friendly */
+        .reg-field-label{
+            display:block;
+            width:100%;
+            box-sizing:border-box;
+            margin:10px 0 6px;
+            padding:0 4px;
+            color:#aebbd3;
+            font-size:14px;
+            font-weight:700;
+            text-align:left;
+            letter-spacing:.2px;
+        }
+        #regBday{
+            color-scheme:dark;
+        }
+        @media (max-width:600px){
+            .reg-field-label{
+                margin-top:8px;
+                margin-bottom:6px;
+                font-size:14px;
+            }
+        }
+</style>
 </head>
 <body>
 
@@ -528,7 +552,7 @@
             <p>Punan ang mga detalye</p>
             <input type="text" id="regName" class="pin-input" placeholder="Full Name">
             <input type="number" id="regAge" class="pin-input" placeholder="Age">
-            <input type="date" id="regBday" class="pin-input" placeholder="Birthday">
+            <input type="date" id="regBday" class="pin-input" aria-label="Birthday">
             <input type="text" id="regAddress" class="pin-input" placeholder="Address">
             <select id="regIdType" class="pin-input">
                 <option value="PhilSys">PhilSys ID</option>
